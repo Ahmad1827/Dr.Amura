@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PediPals - Pediatric Second Opinions</title>
+  <title>Dr. Bubbles - Pediatric Portal</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,14 +20,13 @@
           boxShadow: {
             'pop': '4px 4px 0px 0px #000000',
             'pop-lg': '8px 8px 0px 0px #000000',
-            'pop-hover': '2px 2px 0px 0px #000000',
           },
           colors: {
-            popYellow: '#FFDE59',
-            popPink: '#FF5757',
-            popCyan: '#5CE1E6',
-            popGreen: '#7ED957',
-            popPurple: '#CB6CE6',
+            bubbleYellow: '#FFF176',
+            bubblePink: '#FF80AB',
+            bubbleCyan: '#80D8FF',
+            bubbleGreen: '#B9F6CA',
+            bubblePurple: '#EA80FC',
           }
         }
       }
@@ -37,9 +36,9 @@
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
-      background-color: #FFFDF0;
-      background-image: radial-gradient(#000000 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-color: #F0FBFF;
+      background-image: radial-gradient(#80D8FF 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
     }
     .btn-pop {
       transition: all 0.1s ease-in-out;
@@ -52,25 +51,35 @@
       transform: translate(2px, 2px);
       box-shadow: 0px 0px 0px 0px #000000;
     }
+    @keyframes floatBubble {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(4deg);
+      }
+    }
+    .floating-mascot {
+      animation: floatBubble 3s ease-in-out infinite;
+    }
   </style>
 
-  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-storage-compat.js"></script>
+  <script type="module" src="./app.js"></script>
 </head>
 <body class="text-black min-h-screen flex flex-col justify-between">
 
-  <header class="border-b-4 border-black bg-popYellow px-6 py-4 sticky top-0 z-50">
+  <header class="border-b-4 border-black bg-bubbleYellow px-6 py-4 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 bg-popPink border-4 border-black rounded-full flex items-center justify-center text-2xl shadow-pop">
-          🩺
+        <div class="w-12 h-12 bg-bubbleCyan border-4 border-black rounded-full flex items-center justify-center text-2xl shadow-pop floating-mascot">
+          🫧
         </div>
-        <span class="text-3xl font-black tracking-wide">PediPals</span>
+        <span class="text-3xl font-black tracking-wide">Dr. Bubbles</span>
       </div>
       <nav class="flex gap-4">
         <button onclick="switchTab('home')" class="btn-pop bg-white px-4 py-2 rounded-xl border-4 border-black font-bold shadow-pop">Articles</button>
-        <button onclick="switchTab('consult')" class="btn-pop bg-popCyan px-4 py-2 rounded-xl border-4 border-black font-bold shadow-pop">Send Medical Case</button>
+        <button onclick="switchTab('consult')" class="btn-pop bg-bubblePink text-white px-4 py-2 rounded-xl border-4 border-black font-bold shadow-pop">Ask Dr. Bubbles</button>
+        <button id="doctor-nav-btn" class="btn-pop bg-white px-4 py-2 rounded-xl border-4 border-black font-bold shadow-pop">Doctor Login</button>
       </nav>
     </div>
   </header>
@@ -78,64 +87,65 @@
   <main class="max-w-6xl mx-auto p-6 w-full flex-grow">
     
     <section id="tab-home" class="space-y-8">
-      <div class="bg-popCyan border-4 border-black rounded-3xl p-8 shadow-pop-lg flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="max-w-xl">
-          <span class="bg-popPink text-white border-2 border-black font-black px-3 py-1 rounded-full text-sm inline-block mb-3 shadow-pop">
-            Doctor Verified
+      <div class="bg-bubbleCyan border-4 border-black rounded-3xl p-8 shadow-pop-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+        <div class="max-w-xl z-10">
+          <span class="bg-bubbleYellow border-2 border-black font-black px-3 py-1 rounded-full text-sm inline-block mb-3 shadow-pop">
+            Pediatric Care & Second Opinions
           </span>
           <h1 class="text-4xl md:text-5xl font-black leading-tight mb-4">
-            Pediatric Advice & Second Opinions
+            Big answers for tiny humans.
           </h1>
           <p class="text-lg font-semibold">
-            Get expert medical review on lab tests, rashes, fever charts, and infant growth milestones straight from a pediatrician.
+            Upload lab reports, discharge summaries, or child health questions and receive a clear, board-certified pediatrician's evaluation.
           </p>
         </div>
-        <div class="w-40 h-40 bg-white border-4 border-black rounded-3xl shadow-pop flex items-center justify-center text-7xl select-none">
-          🧸
+        <div class="w-44 h-44 bg-white border-4 border-black rounded-full shadow-pop flex flex-col items-center justify-center text-6xl select-none floating-mascot z-10">
+          🫧
+          <span class="text-xs font-black tracking-widest uppercase mt-1">Dr. Bubbles</span>
         </div>
       </div>
 
       <div>
-        <h2 class="text-3xl font-black mb-6">Pediatric Insights</h2>
+        <h2 class="text-3xl font-black mb-6">Parent Survival Guides</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           <article class="bg-white border-4 border-black rounded-2xl p-5 shadow-pop flex flex-col justify-between">
             <div>
-              <div class="bg-popGreen border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
-                Fever Guide
+              <div class="bg-bubbleGreen border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
+                Lab Values
               </div>
-              <h3 class="text-xl font-bold mb-2">When is a fever actually an emergency?</h3>
+              <h3 class="text-xl font-bold mb-2">Reading Your Baby's Complete Blood Count</h3>
               <p class="text-sm font-semibold text-gray-800">
-                Understanding temperature thresholds by age group, lethargy signs, and hydration tracking.
+                What microcytic anemia, platelets, and CRP spikes mean without the medical jargon.
               </p>
             </div>
-            <button class="btn-pop mt-4 w-full bg-popYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Article</button>
+            <button class="btn-pop mt-4 w-full bg-bubbleYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Guide</button>
           </article>
 
           <article class="bg-white border-4 border-black rounded-2xl p-5 shadow-pop flex flex-col justify-between">
             <div>
-              <div class="bg-popPink text-white border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
-                Newborns
+              <div class="bg-bubblePink text-white border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
+                Emergency vs Clinic
               </div>
-              <h3 class="text-xl font-bold mb-2">Deciphering Common Baby Rashes</h3>
+              <h3 class="text-xl font-bold mb-2">High Fever & Toddler Hydration</h3>
               <p class="text-sm font-semibold text-gray-800">
-                Erythema toxicum, neonatal acne, vs heat rash: visual guide for parents.
+                Wet diaper count guidelines, lethargy indicators, and home antipyretic dosing.
               </p>
             </div>
-            <button class="btn-pop mt-4 w-full bg-popYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Article</button>
+            <button class="btn-pop mt-4 w-full bg-bubbleYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Guide</button>
           </article>
 
           <article class="bg-white border-4 border-black rounded-2xl p-5 shadow-pop flex flex-col justify-between">
             <div>
-              <div class="bg-popPurple text-white border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
-                Nutrition
+              <div class="bg-bubblePurple text-white border-2 border-black inline-block px-2 py-1 rounded-md text-xs font-black uppercase mb-3">
+                Development
               </div>
-              <h3 class="text-xl font-bold mb-2">Iron Deficiency & Toddler Diets</h3>
+              <h3 class="text-xl font-bold mb-2">0 to 12 Months Motor Milestones</h3>
               <p class="text-sm font-semibold text-gray-800">
-                Key lab values to check on complete blood count and simple dietary fixes.
+                Tummy time progress, sitting balance, and when a delay actually requires therapy.
               </p>
             </div>
-            <button class="btn-pop mt-4 w-full bg-popYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Article</button>
+            <button class="btn-pop mt-4 w-full bg-bubbleYellow border-2 border-black py-2 rounded-xl font-bold shadow-pop">Read Guide</button>
           </article>
 
         </div>
@@ -145,43 +155,43 @@
     <section id="tab-consult" class="hidden max-w-2xl mx-auto">
       <div class="bg-white border-4 border-black rounded-3xl p-8 shadow-pop-lg">
         <div class="flex items-center gap-3 mb-6">
-          <div class="text-3xl">📋</div>
+          <div class="text-4xl">🫧</div>
           <div>
-            <h2 class="text-3xl font-black">Submit Medical Records</h2>
-            <p class="text-sm font-bold text-gray-700">Upload lab tests, ultrasound images, or clinical discharge notes.</p>
+            <h2 class="text-3xl font-black">Submit a Case to Dr. Bubbles</h2>
+            <p class="text-sm font-bold text-gray-700">Attach lab test sheets, blood work, or radiology reports.</p>
           </div>
         </div>
 
         <form id="consult-form" class="space-y-4">
           <div>
-            <label class="block text-sm font-black mb-1">Parent's Name & Contact Email</label>
-            <input type="text" id="contact" required class="w-full border-4 border-black rounded-xl p-3 bg-gray-50 focus:bg-yellow-50 focus:outline-none font-bold">
+            <label class="block text-sm font-black mb-1">Parent Contact Email</label>
+            <input type="email" id="contact" required class="w-full border-4 border-black rounded-xl p-3 bg-gray-50 focus:bg-yellow-50 focus:outline-none font-bold">
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-black mb-1">Child Age / Months</label>
+              <label class="block text-sm font-black mb-1">Child Age (Months/Years)</label>
               <input type="text" id="age" required class="w-full border-4 border-black rounded-xl p-3 bg-gray-50 focus:bg-yellow-50 focus:outline-none font-bold">
             </div>
             <div>
-              <label class="block text-sm font-black mb-1">Current Weight (kg)</label>
+              <label class="block text-sm font-black mb-1">Child Weight (kg)</label>
               <input type="text" id="weight" class="w-full border-4 border-black rounded-xl p-3 bg-gray-50 focus:bg-yellow-50 focus:outline-none font-bold">
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-black mb-1">Description of Symptoms & Reason for Review</label>
+            <label class="block text-sm font-black mb-1">Symptoms, Prior Diagnoses & Questions</label>
             <textarea id="symptoms" rows="4" required class="w-full border-4 border-black rounded-xl p-3 bg-gray-50 focus:bg-yellow-50 focus:outline-none font-bold"></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-black mb-1">Attach Medical Examination (PDF, PNG, JPG)</label>
-            <input type="file" id="file" required class="w-full border-4 border-black rounded-xl p-2 bg-popYellow font-bold file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-2 file:border-black file:text-xs file:font-black file:bg-white">
+            <label class="block text-sm font-black mb-1">Medical Files (PDF, JPG, PNG)</label>
+            <input type="file" id="file" required class="w-full border-4 border-black rounded-xl p-2 bg-bubbleYellow font-bold file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-2 file:border-black file:text-xs file:font-black file:bg-white">
           </div>
 
           <div class="pt-4">
-            <button type="submit" id="submit-btn" class="btn-pop w-full bg-popGreen border-4 border-black py-4 rounded-2xl text-xl font-black shadow-pop">
-              Send for Pediatric Review
+            <button type="submit" id="submit-btn" class="btn-pop w-full bg-bubbleGreen border-4 border-black py-4 rounded-2xl text-xl font-black shadow-pop">
+              Send Case to Dr. Bubbles
             </button>
           </div>
 
@@ -190,84 +200,45 @@
       </div>
     </section>
 
+    <section id="tab-doctor" class="hidden space-y-6">
+      <div class="flex justify-between items-center bg-bubblePink border-4 border-black rounded-3xl p-6 shadow-pop">
+        <div>
+          <h2 class="text-3xl font-black text-white">Doctor Station</h2>
+          <p class="font-bold text-black text-sm">Review incoming patient submissions and lab tests.</p>
+        </div>
+        <button id="logout-btn" class="btn-pop bg-white border-4 border-black px-4 py-2 rounded-2xl font-black shadow-pop">
+          Sign Out
+        </button>
+      </div>
+      <div id="cases-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
   </main>
 
+  <div id="login-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white border-4 border-black rounded-3xl p-6 max-w-sm w-full shadow-pop-lg relative">
+      <button onclick="toggleLoginModal(false)" class="absolute top-3 right-4 font-black text-xl">✕</button>
+      <h3 class="text-2xl font-black mb-4">Doctor Login</h3>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-black uppercase mb-1">Email</label>
+          <input type="email" id="doctor-email" required class="w-full border-4 border-black rounded-xl p-2 font-bold bg-gray-50">
+        </div>
+        <div>
+          <label class="block text-xs font-black uppercase mb-1">Password</label>
+          <input type="password" id="doctor-password" required class="w-full border-4 border-black rounded-xl p-2 font-bold bg-gray-50">
+        </div>
+        <p id="login-error" class="hidden text-xs font-black text-red-600"></p>
+        <button type="submit" class="btn-pop w-full bg-bubbleYellow border-4 border-black py-3 rounded-xl font-black shadow-pop">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
   <footer class="border-t-4 border-black bg-white py-4 text-center font-bold text-sm">
-    PediPals • Direct Medical Reviews by Dr. Sis
+    Dr. Bubbles Pediatric Services
   </footer>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-
-    function switchTab(tab) {
-      const home = document.getElementById('tab-home');
-      const consult = document.getElementById('tab-consult');
-      if (tab === 'home') {
-        home.classList.remove('hidden');
-        consult.classList.add('hidden');
-      } else {
-        home.classList.add('hidden');
-        consult.classList.remove('hidden');
-      }
-    }
-
-    const form = document.getElementById('consult-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const statusMsg = document.getElementById('status-msg');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      submitBtn.disabled = true;
-      submitBtn.innerText = "Uploading...";
-      statusMsg.classList.remove('hidden');
-      statusMsg.innerText = "Uploading medical documentation...";
-
-      try {
-        const contact = document.getElementById('contact').value;
-        const age = document.getElementById('age').value;
-        const weight = document.getElementById('weight').value;
-        const symptoms = document.getElementById('symptoms').value;
-        const fileInput = document.getElementById('file');
-        const file = fileInput.files[0];
-
-        const storageRef = storage.ref(`examinations/${Date.now()}_${file.name}`);
-        const snapshot = await storageRef.put(file);
-        const downloadURL = await snapshot.ref.getDownloadURL();
-
-        await db.collection('consultations').add({
-          contact: contact,
-          childAge: age,
-          childWeight: weight,
-          symptoms: symptoms,
-          fileUrl: downloadURL,
-          fileName: file.name,
-          status: 'pending',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        statusMsg.innerText = "Case submitted successfully! We will get in touch soon.";
-        statusMsg.className = "text-center font-black mt-2 text-green-600";
-        form.reset();
-      } catch (err) {
-        statusMsg.innerText = "Error submitting case: " + err.message;
-        statusMsg.className = "text-center font-black mt-2 text-red-600";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Send for Pediatric Review";
-      }
-    });
-  </script>
 </body>
 </html>
