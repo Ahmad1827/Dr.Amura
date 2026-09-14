@@ -2,7 +2,7 @@
 <html lang="ro" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Dr. Bubbles - Pediatrie & Telemedicină</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -133,7 +133,7 @@
 
   <script type="module" src="./app.js"></script>
 </head>
-<body class="text-ink min-h-screen flex flex-col justify-between font-sans antialiased paper-texture relative selection:bg-warmSun selection:text-ink overflow-x-hidden">
+<body class="text-ink min-h-screen flex flex-col justify-between font-sans antialiased paper-texture relative selection:bg-warmSun selection:text-ink overflow-x-hidden pb-20 sm:pb-0">
 
   <aside aria-hidden="true" class="hidden xl:block fixed left-4 2xl:left-8 top-28 bottom-16 w-36 pointer-events-none z-0 select-none">
     <div class="relative w-full h-full">
@@ -170,47 +170,45 @@
     </div>
   </aside>
 
-  <div id="cms-toolbar" class="hidden fixed bottom-6 right-6 z-50 bg-ink text-parchment px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
+  <div id="cms-toolbar" class="hidden fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 bg-ink text-parchment px-4 sm:px-5 py-3 rounded-2xl shadow-2xl flex flex-wrap items-center gap-2 sm:gap-3 border border-white/10 max-w-[95vw]">
     <div class="flex items-center gap-2">
       <span class="w-2.5 h-2.5 rounded-full bg-warmSun animate-ping"></span>
       <span class="text-xs font-bold font-playful tracking-wide">Editare activă</span>
     </div>
-    <button id="save-cms-btn" class="bg-leafGreen hover:bg-leafGreenDark text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md">
-      Salvează textele
+    <button id="save-cms-btn" class="bg-leafGreen hover:bg-leafGreenDark text-white text-xs font-bold px-3 sm:px-4 py-2 rounded-xl transition-all shadow-md">
+      Salvează
     </button>
-    <button id="stop-cms-btn" class="bg-white/10 hover:bg-white/20 text-parchment text-xs font-bold px-3 py-2 rounded-xl transition-all border border-white/15">
-      Oprește editarea
+    <button id="stop-cms-btn" class="bg-white/10 hover:bg-white/20 text-parchment text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl transition-all border border-white/15">
+      Oprește
     </button>
   </div>
 
-  <div class="bg-leafGreen text-parchment text-xs py-2 px-4 shadow-sm relative z-30">
-    <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center gap-3 font-medium">
-        <span class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-leafLight animate-pulse"></span>
-          <span data-cms="top_announcement">Consultanță online pentru dosare pediatrice și opinii pe analize</span>
-        </span>
-        <span class="hidden sm:inline text-parchment/40">·</span>
-        <span class="hidden sm:inline text-parchment/80" data-cms="top_schedule">Program răspunsuri: luni–vineri, 09:00–18:00</span>
+  <div class="bg-leafGreen text-parchment text-[11px] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 shadow-sm relative z-30">
+    <div class="max-w-5xl mx-auto flex justify-between items-center gap-2">
+      <div class="flex items-center gap-2 truncate">
+        <span class="w-2 h-2 rounded-full bg-leafLight animate-pulse shrink-0"></span>
+        <span class="truncate font-medium" data-cms="top_announcement">Consultanță online pentru dosare pediatrice și opinii pe analize</span>
+        <span class="hidden md:inline text-parchment/40">·</span>
+        <span class="hidden md:inline text-parchment/80" data-cms="top_schedule">Program: luni–vineri, 09:00–18:00</span>
       </div>
-      <button id="doctor-nav-btn" class="text-parchment/90 hover:text-white font-semibold underline decoration-warmSun decoration-2 underline-offset-4">
+      <button id="doctor-nav-btn" class="text-parchment/90 hover:text-white font-semibold underline decoration-warmSun decoration-2 underline-offset-4 shrink-0 text-xs">
         Acces medic
       </button>
     </div>
   </div>
 
-  <header class="border-b border-ink/10 bg-[#FBF1DE]/90 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+  <header class="border-b border-ink/10 bg-[#FBF1DE]/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-3.5 sm:px-4 py-3 sm:py-4 flex items-center justify-between gap-3">
       
-      <div class="flex items-center gap-3 cursor-pointer select-none" onclick="switchTab('home')">
-        <div class="w-11 h-11 rounded-2xl bg-leafGreen text-white flex items-center justify-center shadow-sm">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none" onclick="switchTab('home')">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-leafGreen text-white flex items-center justify-center shadow-sm shrink-0">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
           </svg>
         </div>
         <div class="leading-tight">
-          <h1 class="text-2xl font-display font-semibold tracking-tight text-ink">Dr. Bubbles</h1>
-          <p class="text-[11px] font-semibold text-leafGreen" data-cms="brand_tagline">Cabinet pediatric & a doua opinie online</p>
+          <h1 class="text-xl sm:text-2xl font-display font-semibold tracking-tight text-ink">Dr. Bubbles</h1>
+          <p class="text-[10px] sm:text-[11px] font-semibold text-leafGreen truncate max-w-[170px] sm:max-w-none" data-cms="brand_tagline">Cabinet pediatric & a doua opinie online</p>
         </div>
       </div>
 
@@ -221,66 +219,109 @@
         <button onclick="switchTab('articles')" class="link-underline py-1 text-ink/80 hover:text-ink">Ghiduri & Articole</button>
       </nav>
 
-      <div class="flex items-center gap-4">
-        <button onclick="switchTab('consult')" class="bg-coralPop hover:bg-coralDark text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-sm">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('consult')" class="hidden sm:inline-flex bg-coralPop hover:bg-coralDark text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all shadow-sm">
           Trimite o analiză
+        </button>
+        <button onclick="window.toggleMobileNav(true)" class="md:hidden w-10 h-10 rounded-xl bg-white/80 border border-ink/15 flex items-center justify-center text-ink text-lg active:scale-95 transition-transform" aria-label="Meniu">
+          ☰
         </button>
       </div>
 
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 w-full flex-grow relative z-10">
+  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-ink/60 backdrop-blur-sm flex justify-end">
+    <div class="w-72 max-w-[85vw] bg-parchment h-full p-6 flex flex-col justify-between shadow-2xl border-l border-ink/10">
+      <div class="space-y-6">
+        <div class="flex items-center justify-between border-b border-ink/10 pb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🫧</span>
+            <span class="font-display font-semibold text-lg text-ink">Meniu Navigare</span>
+          </div>
+          <button onclick="window.toggleMobileNav(false)" class="w-8 h-8 rounded-full bg-white border border-ink/10 text-ink font-bold flex items-center justify-center text-sm">
+            ✕
+          </button>
+        </div>
 
-    <section id="tab-home" class="space-y-16">
+        <nav class="flex flex-col space-y-3 text-base font-semibold text-ink">
+          <button onclick="window.toggleMobileNav(false); switchTab('home')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+            🏡 Acasă
+          </button>
+          <button onclick="window.toggleMobileNav(false); switchTab('about')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+            👩‍⚕️ Despre medic
+          </button>
+          <button onclick="window.toggleMobileNav(false); switchTab('consult')" class="text-left py-2 px-3 rounded-xl bg-leafLight text-leafGreen font-bold">
+            🧪 Servicii & Tarife
+          </button>
+          <button onclick="window.toggleMobileNav(false); switchTab('articles')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+            📚 Ghiduri & Articole
+          </button>
+        </nav>
+      </div>
 
-      <div id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-12 pb-6 items-center">
-        <div class="lg:col-span-7 space-y-6">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-leafLight/70 border border-leafGreen/20 text-leafGreen text-xs font-bold">
+      <div class="space-y-3 pt-6 border-t border-ink/10">
+        <button onclick="window.toggleMobileNav(false); switchTab('consult')" class="w-full bg-coralPop text-white py-3 rounded-full font-bold text-sm shadow-sm text-center">
+          Trimite o analiză 💌
+        </button>
+        <button onclick="window.toggleMobileNav(false); window.toggleLoginModal(true)" class="w-full text-xs font-bold text-ink/70 py-2 rounded-xl text-center hover:text-ink">
+          Acces medic pediatru 🔒
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-3.5 sm:px-4 w-full flex-grow relative z-10">
+
+    <section id="tab-home" class="space-y-10 sm:space-y-16">
+
+      <div id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 pt-6 sm:pt-12 pb-4 sm:pb-6 items-center">
+        <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center sm:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-leafLight/70 border border-leafGreen/20 text-leafGreen text-[11px] sm:text-xs font-bold">
             <span class="w-2 h-2 rounded-full bg-leafGreen"></span>
             <span>Răspunsuri atente de la medic specialist</span>
           </div>
 
-          <h2 class="text-4xl sm:text-5xl font-display font-medium leading-[1.12] text-ink" data-cms="hero_title">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium leading-[1.15] text-ink" data-cms="hero_title">
             Buletinul de analize a venit vineri seara. Nu trebuie să-l descifrezi singură.
           </h2>
 
-          <p class="text-ink/75 text-base leading-relaxed max-w-lg" data-cms="hero_desc">
+          <p class="text-ink/75 text-sm sm:text-base leading-relaxed max-w-lg mx-auto sm:mx-0" data-cms="hero_desc">
             Încarci documentele copilului, îmi transmiți ce te îngrijorează, iar eu, medic pediatru, îți răspund clar, fără termeni complicați și fără drumuri obositoare.
           </p>
 
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <button onclick="switchTab('consult')" class="bg-leafGreen hover:bg-leafGreenDark text-white px-7 py-3.5 rounded-full font-semibold text-sm transition-all shadow-sm">
+          <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 sm:gap-4 pt-2">
+            <button onclick="switchTab('consult')" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white px-7 py-3.5 rounded-full font-semibold text-sm transition-all shadow-sm active:scale-98">
               Încarcă analizele copilului
             </button>
-            <span class="text-xs font-semibold text-ink/60" data-cms="hero_subtext">
+            <span class="text-xs font-semibold text-ink/60 text-center" data-cms="hero_subtext">
               Evaluare confidențială în format digital
             </span>
           </div>
         </div>
 
-        <div class="lg:col-span-5 relative flex justify-center items-center py-4">
-          <div class="w-64 h-64 sm:w-72 sm:h-72 blob-shape bg-leafLight border border-leafGreen/15 relative flex flex-col items-center justify-center text-center shadow-sm">
-            <span class="text-4xl font-display font-bold text-leafGreen">300+</span>
-            <span class="text-xs font-bold text-ink/70 max-w-[11rem] mt-2 leading-snug" data-cms="stat3_desc">
+        <div class="lg:col-span-5 relative flex justify-center items-center py-2 sm:py-4">
+          <div class="w-52 h-52 sm:w-72 sm:h-72 blob-shape bg-leafLight border border-leafGreen/15 relative flex flex-col items-center justify-center text-center shadow-sm">
+            <span class="text-3xl sm:text-4xl font-display font-bold text-leafGreen">300+</span>
+            <span class="text-xs font-bold text-ink/70 max-w-[10rem] sm:max-w-[11rem] mt-1.5 sm:mt-2 leading-snug" data-cms="stat3_desc">
               dosare și analize evaluate cu atenție
             </span>
           </div>
 
-          <div class="absolute -bottom-2 -left-2 bg-white border border-ink/10 rounded-2xl px-3.5 py-2 shadow-sm rotate-[-3deg]">
-            <span class="text-xs font-bold text-leafGreen">Explicații pe înțeles</span>
+          <div class="absolute -bottom-1 -left-1 sm:-bottom-2 sm:-left-2 bg-white border border-ink/10 rounded-2xl px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-sm rotate-[-3deg]">
+            <span class="text-[11px] sm:text-xs font-bold text-leafGreen">Explicații pe înțeles</span>
           </div>
 
-          <div class="absolute top-2 right-2 bg-warmSun text-ink border border-ink/15 rounded-2xl px-3 py-1 shadow-xs text-xs font-bold rotate-[4deg]">
+          <div class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-warmSun text-ink border border-ink/15 rounded-2xl px-2.5 py-0.5 sm:px-3 sm:py-1 shadow-xs text-[11px] sm:text-xs font-bold rotate-[4deg]">
             Răspuns clar
           </div>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-stretch gap-6 justify-center lg:justify-start">
-        <div onclick="window.selectConsultService('analize')" class="note-card cursor-pointer bg-leafGreen text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-2 shadow-sm flex flex-col justify-between">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-center">
+        <div onclick="window.selectConsultService('analize')" class="note-card cursor-pointer bg-leafGreen text-white rounded-2xl torn-edge px-5 sm:px-6 pt-6 sm:pt-7 pb-5 sm:pb-6 rotate-0 sm:-rotate-2 shadow-sm flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
               <span class="text-xs font-bold uppercase tracking-wider text-leafLight block">Laborator</span>
               <span class="text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-full" data-cms="price_analize">150 RON</span>
             </div>
@@ -290,9 +331,9 @@
           <span class="text-xs font-bold text-leafLight mt-4 inline-block">Trimite analizele →</span>
         </div>
 
-        <div onclick="window.selectConsultService('externare')" class="note-card cursor-pointer bg-coralPop text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-72 rotate-1 sm:mt-4 shadow-sm flex flex-col justify-between">
+        <div onclick="window.selectConsultService('externare')" class="note-card cursor-pointer bg-coralPop text-white rounded-2xl torn-edge px-5 sm:px-6 pt-6 sm:pt-7 pb-5 sm:pb-6 rotate-0 sm:rotate-1 shadow-sm flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
               <span class="text-xs font-bold uppercase tracking-wider text-parchment/80 block">Externare</span>
               <span class="text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-full" data-cms="price_externare">200 RON</span>
             </div>
@@ -302,9 +343,9 @@
           <span class="text-xs font-bold text-parchment mt-4 inline-block">Încarcă biletul →</span>
         </div>
 
-        <div onclick="window.selectConsultService('consiliere')" class="note-card cursor-pointer bg-warmSun text-ink rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-1 shadow-sm flex flex-col justify-between">
+        <div onclick="window.selectConsultService('consiliere')" class="note-card cursor-pointer bg-warmSun text-ink rounded-2xl torn-edge px-5 sm:px-6 pt-6 sm:pt-7 pb-5 sm:pb-6 rotate-0 sm:-rotate-1 shadow-sm flex flex-col justify-between sm:col-span-2 lg:col-span-1">
           <div>
-            <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
               <span class="text-xs font-bold uppercase tracking-wider text-ink/60 block">Consiliere</span>
               <span class="text-xs font-bold bg-ink/10 text-ink px-2 py-0.5 rounded-full" data-cms="price_consiliere">120 RON</span>
             </div>
@@ -315,64 +356,64 @@
         </div>
       </div>
 
-      <div class="bg-ink text-parchment rounded-3xl p-8 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
-        <div class="pt-4 sm:pt-0 sm:pl-8 sm:first:pl-0 text-center sm:text-left">
-          <span class="block text-3xl font-display font-semibold text-warmSun" data-cms="stat1_title">24–48h</span>
-          <span class="text-xs text-white/70 font-medium mt-1 block" data-cms="stat1_desc">timp mediu de răspuns pe e-mail</span>
+      <div class="bg-ink text-parchment rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+        <div class="pt-2 sm:pt-0 sm:pl-8 sm:first:pl-0 text-center sm:text-left">
+          <span class="block text-2xl sm:text-3xl font-display font-semibold text-warmSun" data-cms="stat1_title">24–48h</span>
+          <span class="text-xs text-white/70 font-medium mt-0.5 block" data-cms="stat1_desc">timp mediu de răspuns pe e-mail</span>
         </div>
-        <div class="pt-6 sm:pt-0 sm:pl-8 text-center sm:text-left">
-          <span class="block text-3xl font-display font-semibold text-leafLight" data-cms="stat2_title">Medic rezident</span>
-          <span class="text-xs text-white/70 font-medium mt-1 block" data-cms="stat2_desc">pregătire clinică în pediatrie</span>
+        <div class="pt-5 sm:pt-0 sm:pl-8 text-center sm:text-left">
+          <span class="block text-2xl sm:text-3xl font-display font-semibold text-leafLight" data-cms="stat2_title">Medic rezident</span>
+          <span class="text-xs text-white/70 font-medium mt-0.5 block" data-cms="stat2_desc">pregătire clinică în pediatrie</span>
         </div>
-        <div class="pt-6 sm:pt-0 sm:pl-8 text-center sm:text-left">
-          <span class="block text-3xl font-display font-semibold text-warmSun" data-cms="stat4_title">De acasă</span>
-          <span class="text-xs text-white/70 font-medium mt-1 block" data-cms="stat4_desc">fără drumuri și fără sală de așteptare</span>
+        <div class="pt-5 sm:pt-0 sm:pl-8 text-center sm:text-left">
+          <span class="block text-2xl sm:text-3xl font-display font-semibold text-warmSun" data-cms="stat4_title">De acasă</span>
+          <span class="text-xs text-white/70 font-medium mt-0.5 block" data-cms="stat4_desc">fără drumuri și fără sală de așteptare</span>
         </div>
       </div>
 
-      <div class="space-y-6 pt-4">
-        <div class="flex flex-wrap items-end justify-between gap-4 border-b border-ink/10 pb-4">
+      <div class="space-y-4 sm:space-y-6 pt-2 sm:pt-4">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-ink/10 pb-3 sm:pb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Publicații recente</span>
-            <h3 class="text-2xl sm:text-3xl font-display font-medium text-ink mt-1">Ghiduri scrise de Dr. Bubbles</h3>
-            <p class="text-sm text-ink/60 mt-1">Articole și explicații pas cu pas pentru părinți.</p>
+            <h3 class="text-xl sm:text-3xl font-display font-medium text-ink mt-1">Ghiduri scrise de Dr. Bubbles</h3>
+            <p class="text-xs sm:text-sm text-ink/60 mt-0.5">Articole și explicații pas cu pas pentru părinți.</p>
           </div>
-          <button onclick="switchTab('articles')" class="text-xs font-bold text-leafGreen link-underline">
+          <button onclick="switchTab('articles')" class="text-xs font-bold text-leafGreen link-underline self-start sm:self-auto pt-1 sm:pt-0">
             Vezi toate ghidurile →
           </button>
         </div>
 
-        <div id="home-articles-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        <div id="home-articles-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
       </div>
 
     </section>
 
-    <section id="tab-about" class="hidden py-10 space-y-12">
-      <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
+    <section id="tab-about" class="hidden py-6 sm:py-10 space-y-8 sm:space-y-12">
+      <div class="border-b border-ink/10 pb-4 sm:pb-6 flex items-center justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Despre mine</span>
-          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Dr. Bubbles</h2>
-          <p class="text-sm text-ink/60 mt-1">Medic Pediatru & Mămică</p>
+          <h2 class="text-2xl sm:text-4xl font-display font-medium text-ink mt-1">Dr. Bubbles</h2>
+          <p class="text-xs sm:text-sm text-ink/60 mt-0.5">Medic Pediatru & Mămică</p>
         </div>
-        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
+        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/60 hover:text-ink">
           ← Înapoi acasă
         </button>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center bg-white/70 border border-ink/10 rounded-3xl p-8 sm:p-12 shadow-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-center bg-white/70 border border-ink/10 rounded-2xl sm:rounded-3xl p-5 sm:p-12 shadow-sm">
         <div class="lg:col-span-5 flex justify-center">
-          <div class="blob-shape bg-leafLight border border-leafGreen/20 w-60 h-60 flex flex-col items-center justify-center text-center p-6 shadow-sm">
-            <span class="text-5xl mb-2">🩺</span>
-            <span class="text-xl font-display font-bold text-leafGreen">Dr. Bubbles</span>
-            <span class="text-xs font-semibold text-ink/70 mt-1">Medic Pediatru</span>
+          <div class="blob-shape bg-leafLight border border-leafGreen/20 w-48 h-48 sm:w-60 sm:h-60 flex flex-col items-center justify-center text-center p-4 sm:p-6 shadow-sm">
+            <span class="text-4xl sm:text-5xl mb-2">🩺</span>
+            <span class="text-lg sm:text-xl font-display font-bold text-leafGreen">Dr. Bubbles</span>
+            <span class="text-xs font-semibold text-ink/70 mt-0.5">Medic Pediatru</span>
           </div>
         </div>
 
-        <div class="lg:col-span-7 space-y-5">
-          <h3 class="text-2xl font-display font-medium text-ink">
+        <div class="lg:col-span-7 space-y-4 sm:space-y-5">
+          <h3 class="text-xl sm:text-2xl font-display font-medium text-ink">
             O voce caldă, medicală și empatică în momentele de neliniște.
           </h3>
-          <div class="space-y-4 text-ink/80 text-sm leading-relaxed">
+          <div class="space-y-3 sm:space-y-4 text-ink/80 text-xs sm:text-sm leading-relaxed">
             <p>
               Sunt medic pediatru și, în prezent, sunt acasă îngrijindu-mi propriul bebeluș. Trăiesc zilnic provocările, neliniștile și bucuriile vieții de mămică, dar păstrez rigoarea și experiența anilor de gardă din spital.
             </p>
@@ -384,11 +425,11 @@
             </p>
           </div>
 
-          <div class="pt-4 flex flex-wrap gap-4 text-xs font-bold text-ink">
-            <div class="bg-leafLight/70 border border-leafGreen/20 px-4 py-2 rounded-xl">
+          <div class="pt-2 sm:pt-4 flex flex-wrap gap-2.5 sm:gap-4 text-xs font-bold text-ink">
+            <div class="bg-leafLight/70 border border-leafGreen/20 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl">
               Spitalul Clinic de Copii
             </div>
-            <div class="bg-leafLight/70 border border-leafGreen/20 px-4 py-2 rounded-xl">
+            <div class="bg-leafLight/70 border border-leafGreen/20 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl">
               Specialitate: Pediatrie Generală
             </div>
           </div>
@@ -396,14 +437,14 @@
       </div>
     </section>
 
-    <section id="tab-articles" class="hidden py-10 space-y-8">
-      <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
+    <section id="tab-articles" class="hidden py-6 sm:py-10 space-y-6 sm:space-y-8">
+      <div class="border-b border-ink/10 pb-4 sm:pb-6 flex items-center justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Jurnal Pediatric</span>
-          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Toate Ghidurile & Articolele</h2>
-          <p class="text-sm text-ink/60 mt-1">Informație sigură, direct din practica medicală.</p>
+          <h2 class="text-2xl sm:text-4xl font-display font-medium text-ink mt-1">Ghiduri & Articole</h2>
+          <p class="text-xs sm:text-sm text-ink/60 mt-0.5">Informație sigură, direct din practica medicală.</p>
         </div>
-        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
+        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/60 hover:text-ink">
           ← Înapoi acasă
         </button>
       </div>
@@ -411,192 +452,189 @@
       <div id="articles-archive-list" class="divide-y divide-ink/10 border-t border-b border-ink/10"></div>
     </section>
 
-    <section id="tab-article-view" class="hidden py-10 max-w-3xl mx-auto space-y-8">
+    <section id="tab-article-view" class="hidden py-6 sm:py-10 max-w-3xl mx-auto space-y-6 sm:space-y-8">
       <div class="flex items-center justify-between">
         <button onclick="window.historyBackFromArticle()" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
           ← Înapoi la ghiduri
         </button>
         <div id="doctor-article-actions" class="hidden flex items-center gap-2">
           <button id="reader-edit-btn" class="bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 px-3 py-1 rounded-full text-xs font-bold transition-colors">
-            Editează articolul
+            Editează
           </button>
           <button id="reader-delete-btn" class="bg-berryRose/10 text-berryRose border border-berryRose/30 hover:bg-berryRose/20 px-3 py-1 rounded-full text-xs font-bold transition-colors">
-            Șterge articolul
+            Șterge
           </button>
         </div>
       </div>
 
-      <div class="bg-white/85 rounded-3xl border border-ink/10 p-8 sm:p-12 shadow-sm space-y-6">
+      <div class="bg-white/85 rounded-2xl sm:rounded-3xl border border-ink/10 p-5 sm:p-12 shadow-sm space-y-5 sm:space-y-6">
         <div>
-          <span id="reader-category" class="inline-block text-xs font-bold text-leafGreen uppercase tracking-wider border-b-2 border-leafGreen/40 pb-0.5 mb-3"></span>
-          <h1 id="reader-title" class="text-3xl sm:text-4xl font-display font-semibold text-ink leading-tight"></h1>
-          <div class="flex items-center gap-3 text-xs text-ink/60 mt-3 pt-3 border-t border-ink/10">
+          <span id="reader-category" class="inline-block text-[11px] sm:text-xs font-bold text-leafGreen uppercase tracking-wider border-b-2 border-leafGreen/40 pb-0.5 mb-2.5"></span>
+          <h1 id="reader-title" class="text-2xl sm:text-4xl font-display font-semibold text-ink leading-tight"></h1>
+          <div class="flex items-center gap-2 sm:gap-3 text-xs text-ink/60 mt-2.5 pt-2.5 border-t border-ink/10">
             <span>Autor: <b>Dr. Bubbles</b></span>
             <span>·</span>
             <span id="reader-date">Pediatrie Generală</span>
           </div>
         </div>
 
-        <div id="reader-content" class="text-ink/85 text-base leading-relaxed space-y-4 pt-4 border-t border-ink/10"></div>
+        <div id="reader-content" class="text-ink/85 text-sm sm:text-base leading-relaxed space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-ink/10"></div>
 
-        <div class="pt-8 border-t border-ink/10 mt-8 bg-leafLight/50 p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="pt-6 sm:pt-8 border-t border-ink/10 mt-6 sm:mt-8 bg-leafLight/50 p-4 sm:p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <h4 class="font-display font-semibold text-base text-ink">Ai întrebări despre acest subiect?</h4>
+            <h4 class="font-display font-semibold text-sm sm:text-base text-ink">Ai întrebări despre acest subiect?</h4>
             <p class="text-xs text-ink/70">Trimite dosarul sau analizele copilului pentru o a doua opinie.</p>
           </div>
-          <button onclick="switchTab('consult')" class="bg-leafGreen hover:bg-leafGreenDark text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shrink-0">
+          <button onclick="switchTab('consult')" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all text-center shrink-0">
             Trimite analizele acum
           </button>
         </div>
       </div>
     </section>
 
-    <!-- CONSULTATION & SERVICES SELECTION -->
-    <section id="tab-consult" class="hidden max-w-3xl mx-auto py-12 space-y-8">
+    <section id="tab-consult" class="hidden max-w-3xl mx-auto py-6 sm:py-12 space-y-6 sm:space-y-8">
       
-      <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
+      <div class="border-b border-ink/10 pb-4 sm:pb-6 flex items-center justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Cabinet Online</span>
-          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Alege serviciul pediatric</h2>
-          <p class="text-sm text-ink/60 mt-1">Selectează serviciul potrivit, completează datele și inițiază plata prin Piper.</p>
+          <h2 class="text-2xl sm:text-4xl font-display font-medium text-ink mt-1">Alege serviciul pediatric</h2>
+          <p class="text-xs sm:text-sm text-ink/60 mt-0.5">Selectează serviciul potrivit și completează datele.</p>
         </div>
-        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
+        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/60 hover:text-ink">
           ← Înapoi acasă
         </button>
       </div>
 
-      <!-- THE 4 SELECTION BOXES (THE "BOX ABOVE") -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
         
-        <div onclick="window.selectConsultService('analize')" id="service-card-analize" class="service-selector-card cursor-pointer bg-white/95 border-2 border-leafGreen rounded-2xl p-5 shadow-sm hover:border-leafGreen transition-all flex flex-col justify-between">
+        <div onclick="window.selectConsultService('analize')" id="service-card-analize" class="service-selector-card cursor-pointer bg-white/95 border-2 border-leafGreen rounded-2xl p-4 sm:p-5 shadow-sm hover:border-leafGreen transition-all flex flex-col justify-between">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <div class="w-10 h-10 rounded-xl bg-leafGreen text-white flex items-center justify-center text-lg">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-leafGreen text-white flex items-center justify-center text-base sm:text-lg">
                 🧪
               </div>
-              <span class="text-xs font-bold bg-leafLight text-leafGreenDark border border-leafGreen/20 px-3 py-1 rounded-full" data-cms="price_analize">
+              <span class="text-xs font-bold bg-leafLight text-leafGreenDark border border-leafGreen/20 px-2.5 sm:px-3 py-1 rounded-full" data-cms="price_analize">
                 150 RON
               </span>
             </div>
-            <h3 class="font-display font-semibold text-lg text-ink">Interpretare Analize Medicale</h3>
+            <h3 class="font-display font-semibold text-base sm:text-lg text-ink">Interpretare Analize Medicale</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
-              Hemoleucograme, valori inflamatorii (VSH, PCR), biochimie sau sumar de urină. Atașarea documentului este necesară.
+              Hemoleucograme, valori inflamatorii (VSH, PCR), biochimie sau urocultură. Atașarea documentului este necesară.
             </p>
           </div>
-          <span class="text-xs font-bold text-leafGreen mt-4 inline-block">Selectat ✓</span>
+          <span class="text-xs font-bold text-leafGreen mt-3 sm:mt-4 inline-block">Selectat ✓</span>
         </div>
 
-        <div onclick="window.selectConsultService('externare')" id="service-card-externare" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-coralPop transition-all flex flex-col justify-between">
+        <div onclick="window.selectConsultService('externare')" id="service-card-externare" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-4 sm:p-5 shadow-sm hover:border-coralPop transition-all flex flex-col justify-between">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <div class="w-10 h-10 rounded-xl bg-coralPop text-white flex items-center justify-center text-lg">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-coralPop text-white flex items-center justify-center text-base sm:text-lg">
                 📋
               </div>
-              <span class="text-xs font-bold bg-coralPop/10 text-coralDark border border-coralPop/20 px-3 py-1 rounded-full" data-cms="price_externare">
+              <span class="text-xs font-bold bg-coralPop/10 text-coralDark border border-coralPop/20 px-2.5 sm:px-3 py-1 rounded-full" data-cms="price_externare">
                 200 RON
               </span>
             </div>
-            <h3 class="font-display font-semibold text-lg text-ink">A Doua Opinie Bilet Externare</h3>
+            <h3 class="font-display font-semibold text-base sm:text-lg text-ink">A Doua Opinie Bilet Externare</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
               Evaluarea diagnosticului din spital sau camera de gardă și explicarea tratamentului recomandat la domiciliu.
             </p>
           </div>
-          <span class="text-xs font-bold text-coralPop mt-4 inline-block">Alege acest serviciu →</span>
+          <span class="text-xs font-bold text-coralPop mt-3 sm:mt-4 inline-block">Alege acest serviciu →</span>
         </div>
 
-        <div onclick="window.selectConsultService('consiliere')" id="service-card-consiliere" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-warmSun transition-all flex flex-col justify-between">
+        <div onclick="window.selectConsultService('consiliere')" id="service-card-consiliere" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-4 sm:p-5 shadow-sm hover:border-warmSun transition-all flex flex-col justify-between">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <div class="w-10 h-10 rounded-xl bg-warmSun text-ink flex items-center justify-center text-lg">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-warmSun text-ink flex items-center justify-center text-base sm:text-lg">
                 🍼
               </div>
-              <span class="text-xs font-bold bg-warmSun/20 text-amber-900 border border-warmSun/30 px-3 py-1 rounded-full" data-cms="price_consiliere">
+              <span class="text-xs font-bold bg-warmSun/20 text-amber-900 border border-warmSun/30 px-2.5 sm:px-3 py-1 rounded-full" data-cms="price_consiliere">
                 120 RON
               </span>
             </div>
-            <h3 class="font-display font-semibold text-lg text-ink">Consiliere Bebeluşi & Tranzit</h3>
+            <h3 class="font-display font-semibold text-base sm:text-lg text-ink">Consiliere Bebeluşi & Tranzit</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
               Întrebări despre diversificare, apetit, scaune sau pusee. Atașarea documentelor medicale este opțională.
             </p>
           </div>
-          <span class="text-xs font-bold text-amber-800 mt-4 inline-block">Alege acest serviciu →</span>
+          <span class="text-xs font-bold text-amber-800 mt-3 sm:mt-4 inline-block">Alege acest serviciu →</span>
         </div>
 
-        <div onclick="window.showVideoCallWipModal()" class="cursor-pointer bg-gradient-to-br from-white/40 to-slate-100/60 border-2 border-dashed border-ink/20 rounded-2xl p-5 shadow-xs flex flex-col justify-between relative overflow-hidden group">
+        <div onclick="window.showVideoCallWipModal()" class="cursor-pointer bg-gradient-to-br from-white/40 to-slate-100/60 border-2 border-dashed border-ink/20 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between relative overflow-hidden group">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <div class="w-10 h-10 rounded-xl bg-skyMist text-ink flex items-center justify-center text-lg">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-skyMist text-ink flex items-center justify-center text-base sm:text-lg">
                 📹
               </div>
-              <span class="bg-berryRose/15 text-berryRose text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-berryRose/30">
-                În curând / În lucru 🚧
+              <span class="bg-berryRose/15 text-berryRose text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-berryRose/30">
+                În curând 🚧
               </span>
             </div>
-            <h3 class="font-display font-semibold text-lg text-ink/80 group-hover:text-ink transition-colors">
+            <h3 class="font-display font-semibold text-base sm:text-lg text-ink/80 group-hover:text-ink transition-colors">
               Consultație Video Live 1-la-1
             </h3>
             <p class="text-xs text-ink/60 leading-relaxed">
               Discuție video directă securizată cu medicul pediatru, direct în browser, fără instalare de aplicații.
             </p>
           </div>
-          <span class="text-xs font-bold text-berryRose mt-4 inline-block">Află detalii →</span>
+          <span class="text-xs font-bold text-berryRose mt-3 sm:mt-4 inline-block">Află detalii →</span>
         </div>
 
       </div>
 
-      <!-- FORM CARD WITH "TARIF SERVICIU" DISPLAY -->
-      <div class="bg-white/85 backdrop-blur-sm rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-sm relative">
-        <div class="mb-6 pb-6 border-b border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="bg-white/85 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-ink/10 p-5 sm:p-10 shadow-sm relative">
+        <div class="mb-5 sm:mb-6 pb-4 sm:pb-6 border-b border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <span id="form-service-badge" class="inline-block text-xs font-bold uppercase tracking-wider text-leafGreen bg-leafLight/70 px-3 py-1 rounded-full mb-2">
+            <span id="form-service-badge" class="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-leafGreen bg-leafLight/70 px-2.5 sm:px-3 py-1 rounded-full mb-1.5 sm:mb-2">
               Serviciu selectat: Interpretare Analize Medicale
             </span>
-            <h3 id="form-service-title" class="text-2xl font-display font-medium text-ink">Completează datele copilului</h3>
-            <p id="form-service-desc" class="text-xs font-semibold text-ink/60 mt-1">
+            <h3 id="form-service-title" class="text-xl sm:text-2xl font-display font-medium text-ink">Completează datele copilului</h3>
+            <p id="form-service-desc" class="text-xs font-semibold text-ink/60 mt-0.5 sm:mt-1">
               Datele tale sunt trimise securizat către medicul pediatru.
             </p>
           </div>
-          <div class="bg-parchment border border-ink/10 px-4 py-2.5 rounded-2xl text-right">
+          <div class="bg-parchment border border-ink/10 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl flex sm:flex-col items-center sm:items-end justify-between">
             <span class="text-[10px] font-bold uppercase tracking-wider text-ink/60 block">Tarif Serviciu</span>
-            <span id="form-display-price" class="text-xl font-display font-bold text-leafGreen">150 RON</span>
+            <span id="form-display-price" class="text-lg sm:text-xl font-display font-bold text-leafGreen">150 RON</span>
           </div>
         </div>
 
-        <form id="consult-form" class="space-y-5">
+        <form id="consult-form" class="space-y-4 sm:space-y-5">
           <input type="hidden" id="selected-service-input" value="analize">
 
           <div>
-            <label class="block text-xs font-bold text-ink/70 mb-1.5">Adresă de e-mail părinte (pentru primirea evaluării)</label>
-            <input type="email" id="contact" required placeholder="nume.prenume@email.ro" class="w-full border border-ink/15 rounded-xl px-4 py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
+            <label class="block text-xs font-bold text-ink/70 mb-1">Adresă de e-mail părinte (pentru primirea evaluării)</label>
+            <input type="email" id="contact" required placeholder="nume.prenume@email.ro" class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label class="block text-xs font-bold text-ink/70 mb-1.5">Vârstă copil</label>
-              <input type="text" id="age" required placeholder="Ex: 7 luni / 3 ani" class="w-full border border-ink/15 rounded-xl px-4 py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
+              <label class="block text-xs font-bold text-ink/70 mb-1">Vârstă copil</label>
+              <input type="text" id="age" required placeholder="Ex: 7 luni / 3 ani" class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
             </div>
             <div>
-              <label class="block text-xs font-bold text-ink/70 mb-1.5">Greutate curentă (kg)</label>
-              <input type="text" id="weight" placeholder="Ex: 8.9 kg" class="w-full border border-ink/15 rounded-xl px-4 py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
+              <label class="block text-xs font-bold text-ink/70 mb-1">Greutate curentă (kg)</label>
+              <input type="text" id="weight" placeholder="Ex: 8.9 kg" class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-ink/70 mb-1.5">Simptome curente, tratamente administrate & întrebări specifice</label>
-            <textarea id="symptoms" rows="4" required placeholder="Descrie pe scurt starea generală, febra, de când au început manifestările și ce parametri din analize te îngrijorează..." class="w-full border border-ink/15 rounded-xl px-4 py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors"></textarea>
+            <label class="block text-xs font-bold text-ink/70 mb-1">Simptome curente, tratamente & întrebări specifice</label>
+            <textarea id="symptoms" rows="4" required placeholder="Descrie pe scurt starea generală, febra, manifestările..." class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors"></textarea>
           </div>
 
           <div>
-            <label id="file-label" class="block text-xs font-bold text-ink/70 mb-1.5">Atașează buletinul de analize sau raportul medical (PDF, poze) *</label>
-            <div class="border-2 border-dashed border-ink/20 bg-parchment/60 rounded-2xl p-5 text-center">
-              <input type="file" id="file" required class="w-full text-xs font-semibold text-ink/70 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-leafGreen file:text-white hover:file:bg-leafGreenDark cursor-pointer">
+            <label id="file-label" class="block text-xs font-bold text-ink/70 mb-1">Atașează buletinul de analize sau raportul medical *</label>
+            <div class="border-2 border-dashed border-ink/20 bg-parchment/60 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-center">
+              <input type="file" id="file" required class="w-full text-xs font-semibold text-ink/70 file:mr-3 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-leafGreen file:text-white hover:file:bg-leafGreenDark cursor-pointer">
             </div>
           </div>
 
-          <div class="pt-2">
-            <button type="submit" id="submit-btn" class="w-full bg-coralPop hover:bg-coralDark text-white py-4 rounded-full font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+          <div class="pt-1 sm:pt-2">
+            <button type="submit" id="submit-btn" class="w-full bg-coralPop hover:bg-coralDark text-white py-3.5 sm:py-4 rounded-full font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 active:scale-98">
               <span>Continuă spre Plata Piper</span>
-              <span id="btn-price-tag" class="bg-white/20 px-2.5 py-0.5 rounded-full text-xs font-bold">150 RON</span>
+              <span id="btn-price-tag" class="bg-white/20 px-2 py-0.5 rounded-full text-xs font-bold">150 RON</span>
             </button>
           </div>
 
@@ -605,40 +643,38 @@
       </div>
     </section>
 
-    <!-- PIPER CHECKOUT TAB -->
-    <section id="tab-piper-checkout" class="hidden max-w-xl mx-auto py-12 space-y-6">
+    <section id="tab-piper-checkout" class="hidden max-w-xl mx-auto py-6 sm:py-12 space-y-4 sm:space-y-6">
       <div class="flex items-center justify-between">
         <button onclick="switchTab('consult')" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
           ← Înapoi la formular
         </button>
-        <span class="text-xs font-bold text-ink/50 bg-white/70 px-3 py-1 rounded-full border border-ink/10">
+        <span class="text-xs font-bold text-ink/50 bg-white/70 px-2.5 sm:px-3 py-1 rounded-full border border-ink/10">
           Piper Checkout Securizat
         </span>
       </div>
 
-      <div class="bg-white rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-lg space-y-6 relative overflow-hidden">
+      <div class="bg-white rounded-2xl sm:rounded-3xl border border-ink/10 p-5 sm:p-10 shadow-lg space-y-5 sm:space-y-6 relative overflow-hidden">
         
-        <div class="border-b border-ink/10 pb-5">
+        <div class="border-b border-ink/10 pb-4 sm:pb-5">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-leafLight text-leafGreen flex items-center justify-center text-xl">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-leafLight text-leafGreen flex items-center justify-center text-lg sm:text-xl">
               🫧
             </div>
             <div>
-              <h3 class="text-2xl font-display font-semibold text-ink">Piper Payment Gateway</h3>
+              <h3 class="text-xl sm:text-2xl font-display font-semibold text-ink">Piper Payment Gateway</h3>
               <p class="text-xs font-semibold text-ink/60">Finalizează plata securizată prin Stripe</p>
             </div>
           </div>
         </div>
 
-        <!-- SUMMARY -->
-        <div class="bg-parchment rounded-2xl p-4 border border-ink/10 space-y-2">
+        <div class="bg-parchment rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-ink/10 space-y-2">
           <div class="flex justify-between text-xs text-ink/70">
             <span>Serviciu pediatric:</span>
-            <span id="piper-summary-service" class="font-bold text-ink">Interpretare Analize</span>
+            <span id="piper-summary-service" class="font-bold text-ink truncate ml-2 text-right">Interpretare Analize</span>
           </div>
           <div class="flex justify-between text-xs text-ink/70">
             <span>E-mail pacient:</span>
-            <span id="piper-summary-email" class="font-bold text-ink">exemplu@email.ro</span>
+            <span id="piper-summary-email" class="font-bold text-ink truncate ml-2 text-right">exemplu@email.ro</span>
           </div>
           <div class="flex justify-between text-sm font-bold text-ink border-t border-ink/10 pt-2">
             <span>Total de plată:</span>
@@ -646,57 +682,54 @@
           </div>
         </div>
 
-        <!-- QUICK TEST BOX -->
-        <div class="bg-amber-50 border border-warmSun/40 rounded-2xl p-4 space-y-2.5">
+        <div class="bg-amber-50 border border-warmSun/40 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
               <span>🧪</span> Card Stripe de Test:
             </span>
             <button type="button" onclick="navigator.clipboard.writeText('4242424242424242'); alert('Card copiat!');" class="text-[11px] font-bold text-leafGreen underline cursor-pointer">
-              Copiază numărul cardului
+              Copiază cardul
             </button>
           </div>
-          <div class="grid grid-cols-3 gap-2 text-[11px] font-semibold text-amber-950 bg-white/80 p-2.5 rounded-xl border border-warmSun/20">
-            <div>Număr: <span class="font-mono font-bold">4242...4242</span></div>
-            <div>Data: <span class="font-mono font-bold">12/28</span></div>
-            <div>CVC: <span class="font-mono font-bold">123</span></div>
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] font-semibold text-amber-950 bg-white/80 p-2 sm:p-2.5 rounded-xl border border-warmSun/20 text-center">
+            <div>Număr: <span class="font-mono font-bold block sm:inline">4242...4242</span></div>
+            <div>Data: <span class="font-mono font-bold block sm:inline">12/28</span></div>
+            <div>CVC: <span class="font-mono font-bold block sm:inline">123</span></div>
           </div>
-          <div class="pt-1 flex items-center justify-between border-t border-warmSun/20">
-            <span class="text-[10px] text-amber-800/90 font-medium">Testare instant fără card:</span>
-            <button type="button" id="piper-simulate-pay-btn" class="text-xs font-bold bg-warmSun/30 border border-warmSun/60 hover:bg-warmSun/50 text-ink px-3 py-1 rounded-full transition-colors">
+          <div class="pt-1 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-warmSun/20">
+            <span class="text-[10px] text-amber-800/90 font-medium text-center sm:text-left">Testare rapidă fără introducere date:</span>
+            <button type="button" id="piper-simulate-pay-btn" class="w-full sm:w-auto text-xs font-bold bg-warmSun/30 border border-warmSun/60 hover:bg-warmSun/50 text-ink px-3 py-1.5 sm:py-1 rounded-full transition-colors text-center">
               ⚡ Simulează Plată Test (1-Click)
             </button>
           </div>
         </div>
 
-        <!-- STRIPE CARD FORM -->
-        <form id="piper-stripe-form" class="space-y-5">
+        <form id="piper-stripe-form" class="space-y-4 sm:space-y-5">
           <div>
-            <label class="block text-xs font-bold text-ink/70 mb-2">Introdu Cardul de Test sau Real (Stripe)</label>
-            <div id="stripe-card-element" class="p-4 bg-white border border-ink/15 rounded-xl text-sm shadow-inner min-h-[48px]"></div>
+            <label class="block text-xs font-bold text-ink/70 mb-1.5 sm:mb-2">Introdu Cardul de Test sau Real (Stripe)</label>
+            <div id="stripe-card-element" class="p-3 sm:p-4 bg-white border border-ink/15 rounded-xl text-sm shadow-inner min-h-[44px]"></div>
             <div id="stripe-card-errors" class="text-xs font-bold text-berryRose mt-2 hidden"></div>
           </div>
 
-          <button type="submit" id="piper-pay-btn" class="w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3.5 rounded-full font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+          <button type="submit" id="piper-pay-btn" class="w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3.5 rounded-full font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-98">
             <span>Plătește prin Piper</span>
             <span id="piper-btn-amount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs">150 RON</span>
           </button>
 
-          <p class="text-[11px] text-center text-ink/50 leading-relaxed">
+          <p class="text-[10px] sm:text-[11px] text-center text-ink/50 leading-relaxed">
             Standard PCI-DSS certificat de Stripe. Datele bancare nu sunt stocate pe serverele Dr. Bubbles.
           </p>
         </form>
 
-        <!-- SUCCESS CONFIRMATION -->
-        <div id="piper-success-screen" class="hidden text-center py-6 space-y-4">
-          <div class="w-16 h-16 rounded-full bg-leafLight text-leafGreen flex items-center justify-center text-3xl mx-auto shadow-sm">
+        <div id="piper-success-screen" class="hidden text-center py-4 sm:py-6 space-y-4">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-leafLight text-leafGreen flex items-center justify-center text-2xl sm:text-3xl mx-auto shadow-sm">
             ✓
           </div>
-          <h3 class="text-2xl font-display font-semibold text-ink">Plată confirmată cu succes!</h3>
+          <h3 class="text-xl sm:text-2xl font-display font-semibold text-ink">Plată confirmată cu succes!</h3>
           <p class="text-xs text-ink/70 max-w-sm mx-auto leading-relaxed">
             Dosarul a fost marcat ca achitat. Notificarea a fost trimisă către medicul pediatru, iar interpretarea va fi expediată pe adresa ta de e-mail.
           </p>
-          <button onclick="switchTab('home')" class="bg-leafGreen hover:bg-leafGreenDark text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all">
+          <button onclick="switchTab('home')" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all">
             Înapoi pe prima pagină
           </button>
         </div>
@@ -704,112 +737,40 @@
       </div>
     </section>
 
-    <section id="tab-piper-checkout" class="hidden max-w-xl mx-auto py-12 space-y-6">
-      <div class="flex items-center justify-between">
-        <button onclick="switchTab('consult')" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
-          ← Înapoi la formular
-        </button>
-        <span class="text-xs font-bold text-ink/50 bg-white/70 px-3 py-1 rounded-full border border-ink/10">
-          Piper Checkout Securizat
-        </span>
-      </div>
-
-      <div class="bg-white rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-lg space-y-6 relative overflow-hidden">
-        
-        <div class="border-b border-ink/10 pb-5">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-leafLight text-leafGreen flex items-center justify-center text-xl">
-              🫧
-            </div>
-            <div>
-              <h3 class="text-2xl font-display font-semibold text-ink">Piper Payment Gateway</h3>
-              <p class="text-xs font-semibold text-ink/60">Finalizează plata securizată prin Stripe</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-parchment rounded-2xl p-4 border border-ink/10 space-y-2">
-          <div class="flex justify-between text-xs text-ink/70">
-            <span>Serviciu pediatric:</span>
-            <span id="piper-summary-service" class="font-bold text-ink">Interpretare Analize</span>
-          </div>
-          <div class="flex justify-between text-xs text-ink/70">
-            <span>E-mail pacient:</span>
-            <span id="piper-summary-email" class="font-bold text-ink">exemplu@email.ro</span>
-          </div>
-          <div class="flex justify-between text-sm font-bold text-ink border-t border-ink/10 pt-2">
-            <span>Total de plată:</span>
-            <span id="piper-summary-amount" class="text-leafGreen font-display text-base">150 RON</span>
-          </div>
-        </div>
-
-        <form id="piper-stripe-form" class="space-y-5">
-          <div>
-            <label class="block text-xs font-bold text-ink/70 mb-2">Detalii Card Bancar (Procesat prin Stripe)</label>
-            <div id="stripe-card-element" class="p-4 bg-white border border-ink/15 rounded-xl text-sm shadow-inner"></div>
-            <div id="stripe-card-errors" class="text-xs font-bold text-berryRose mt-2 hidden"></div>
-          </div>
-
-          <button type="submit" id="piper-pay-btn" class="w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3.5 rounded-full font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
-            <span>Plătește în siguranță</span>
-            <span id="piper-btn-amount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs">150 RON</span>
-          </button>
-
-          <p class="text-[11px] text-center text-ink/50 leading-relaxed">
-            Plățile sunt procesate securizat conform standardului PCI-DSS. Nu salvăm datele cardului tău.
-          </p>
-        </form>
-
-        <div id="piper-success-screen" class="hidden text-center py-6 space-y-4">
-          <div class="w-16 h-16 rounded-full bg-leafLight text-leafGreen flex items-center justify-center text-3xl mx-auto shadow-sm">
-            ✓
-          </div>
-          <h3 class="text-2xl font-display font-semibold text-ink">Plată confirmată cu succes!</h3>
-          <p class="text-xs text-ink/70 max-w-sm mx-auto leading-relaxed">
-            Dosarul a fost recepționat de Dr. Bubbles. O notificare a fost expediată către medic, iar evaluarea va fi trimisă pe adresa ta de e-mail.
-          </p>
-          <button onclick="switchTab('home')" class="bg-leafGreen hover:bg-leafGreenDark text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all">
-            Înapoi pe prima pagină
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="tab-doctor" class="hidden py-12 space-y-10">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-ink/10">
+    <section id="tab-doctor" class="hidden py-6 sm:py-12 space-y-6 sm:space-y-10">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-ink/10">
         <div>
-          <h2 class="text-2xl font-display font-medium text-ink">Panou administrare medic</h2>
-          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților, articolele, tarifele și e-mailul de notificare.</p>
+          <h2 class="text-xl sm:text-2xl font-display font-medium text-ink">Panou administrare medic</h2>
+          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților, articolele și tarifele.</p>
         </div>
-        <div class="flex items-center gap-3">
-          <button id="toggle-cms-mode-btn" class="px-4 py-2 rounded-full text-xs font-bold bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 transition-colors">
-            Editează textele site-ului
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <button id="toggle-cms-mode-btn" class="flex-1 sm:flex-none px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 transition-colors text-center">
+            Editează textele
           </button>
-          <button id="logout-btn" class="px-4 py-2 rounded-full text-xs font-bold text-berryRose border border-berryRose/30 hover:bg-berryRose/10 transition-colors">
-            Deconectare
+          <button id="logout-btn" class="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-berryRose border border-berryRose/30 hover:bg-berryRose/10 transition-colors">
+            Ieșire
           </button>
         </div>
       </div>
 
-      <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
+      <div class="bg-white/80 border border-ink/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm space-y-4 sm:space-y-5">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-xl font-display font-semibold text-ink">Configurare Notificări & Tarife Servicii</h3>
-            <p class="text-xs text-ink/60 mt-0.5">Modifică adresa de e-mail pentru recepționarea dosarelor și tarifele Piper.</p>
+            <h3 class="text-lg sm:text-xl font-display font-semibold text-ink">Configurare Notificări & Tarife Servicii</h3>
+            <p class="text-xs text-ink/60 mt-0.5">Modifică adresa de e-mail și tarifele Piper.</p>
           </div>
-          <span class="text-xs font-bold bg-leafLight text-leafGreen px-3 py-1 rounded-full border border-leafGreen/20">
+          <span class="text-[10px] sm:text-xs font-bold bg-leafLight text-leafGreen px-2.5 sm:px-3 py-1 rounded-full border border-leafGreen/20">
             Setări Medic
           </span>
         </div>
 
-        <form id="doctor-settings-form" class="space-y-4">
+        <form id="doctor-settings-form" class="space-y-3.5 sm:space-y-4">
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1">E-mail Medic pentru primirea dosarelor plătite</label>
             <input type="email" id="doctor-notification-email" required value="ahmadarnaoute1896@gmail.com" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1 sm:pt-2">
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Analize (RON)</label>
               <input type="number" id="doctor-price-analize" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
@@ -824,72 +785,90 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
             <div>
-              <label class="block text-xs font-bold text-ink/70 mb-1">Stripe Publishable Key (pk_test_... sau pk_live_...)</label>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Stripe Publishable Key</label>
               <input type="text" id="doctor-stripe-key" placeholder="pk_test_..." class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
-              <label class="block text-xs font-bold text-ink/70 mb-1">Firebase Cloud Functions URL</label>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Firebase Functions URL</label>
               <input type="url" id="doctor-functions-url" placeholder="https://us-central1-drbubbles-49e6f.cloudfunctions.net" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
           </div>
 
-          <div class="pt-3 flex items-center justify-between">
-            <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-2.5 rounded-full text-xs transition-colors shadow-sm">
+          <div class="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <button type="submit" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-2.5 rounded-full text-xs transition-colors shadow-sm">
               Salvează Setările & Tarifele
             </button>
-            <span id="doctor-settings-status" class="text-xs font-bold text-leafGreen hidden">Setările au fost salvate cu succes! ✓</span>
+            <span id="doctor-settings-status" class="text-xs font-bold text-leafGreen hidden text-center">Setările au fost salvate cu succes! ✓</span>
           </div>
         </form>
       </div>
 
-      <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
-        <h3 class="text-xl font-display font-semibold text-ink">Publică un articol sau ghid nou</h3>
-        <form id="new-article-form" class="space-y-4">
+      <div class="bg-white/80 border border-ink/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-lg sm:text-xl font-display font-semibold text-ink">Publică un articol sau ghid nou</h3>
+        <form id="new-article-form" class="space-y-3.5 sm:space-y-4">
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1">Titlu articol</label>
-            <input type="text" id="new-art-title" required placeholder="Ex: De ce febra nu trebuie coborâtă cu orice preț" class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            <input type="text" id="new-art-title" required placeholder="Ex: De ce febra nu trebuie coborâtă cu orice preț" class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Categorie</label>
-              <input type="text" id="new-art-category" required placeholder="Ex: Ghid Febră, Analize, Nutriție" class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="text" id="new-art-category" required placeholder="Ex: Ghid Febră, Analize, Nutriție" class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
-              <label class="block text-xs font-bold text-ink/70 mb-1">Rezumat Scurt (pentru cardul de pe prima pagină)</label>
-              <input type="text" id="new-art-excerpt" required placeholder="Ex: Când apelăm la antitermic și cum calculăm doza corectă..." class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <label class="block text-xs font-bold text-ink/70 mb-1">Rezumat Scurt</label>
+              <input type="text" id="new-art-excerpt" required placeholder="Ex: Când apelăm la antitermic..." class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
           </div>
           <div>
-            <label class="block text-xs font-bold text-ink/70 mb-1">Conținut Complet al Articolului</label>
-            <textarea id="new-art-content" rows="6" required placeholder="Scrie textul complet aici. Separă paragrafele prin linii noi..." class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
+            <label class="block text-xs font-bold text-ink/70 mb-1">Conținut Complet</label>
+            <textarea id="new-art-content" rows="5" required placeholder="Scrie conținutul complet aici..." class="w-full border border-ink/15 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
           </div>
-          <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-3 rounded-full text-xs transition-colors shadow-sm">
-            Publică articolul pe prima pagină
+          <button type="submit" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-2.5 sm:py-3 rounded-full text-xs transition-colors shadow-sm">
+            Publică articolul
           </button>
         </form>
       </div>
 
-      <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
-        <h3 class="text-xl font-display font-semibold text-ink">Ghiduri & Articole existente</h3>
+      <div class="bg-white/80 border border-ink/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-lg sm:text-xl font-display font-semibold text-ink">Ghiduri & Articole existente</h3>
         <div id="doctor-articles-manage-list" class="divide-y divide-ink/10"></div>
       </div>
 
       <div>
-        <h3 class="text-xl font-display font-semibold mb-4 text-ink">Dosare primite de la părinți</h3>
-        <div id="cases-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        <h3 class="text-lg sm:text-xl font-display font-semibold mb-3 sm:mb-4 text-ink">Dosare primite de la părinți</h3>
+        <div id="cases-list" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5"></div>
       </div>
     </section>
 
   </main>
 
-  <div id="edit-article-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-parchment border border-ink/10 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative">
+  <div class="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#FBF1DE]/95 backdrop-blur-md border-t border-ink/10 px-4 py-2 flex items-center justify-between gap-3 shadow-lg">
+    <button onclick="switchTab('home')" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/80 hover:text-ink">
+      <span class="text-lg leading-none">🏡</span>
+      <span class="text-[10px] font-bold mt-1">Acasă</span>
+    </button>
+    <button onclick="switchTab('consult')" class="flex flex-col items-center justify-center flex-1 py-1 text-leafGreen font-bold">
+      <span class="text-lg leading-none">🧪</span>
+      <span class="text-[10px] mt-1">Servicii</span>
+    </button>
+    <button onclick="switchTab('articles')" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/80 hover:text-ink">
+      <span class="text-lg leading-none">📚</span>
+      <span class="text-[10px] font-bold mt-1">Ghiduri</span>
+    </button>
+    <button onclick="switchTab('consult')" class="bg-coralPop hover:bg-coralDark text-white px-4 py-2 rounded-full font-bold text-xs shadow-sm active:scale-95 transition-transform flex items-center gap-1.5 shrink-0">
+      <span>💌</span> Trimite
+    </button>
+  </div>
+
+  <div id="edit-article-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-parchment border border-ink/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 max-w-xl w-full shadow-2xl relative max-h-[92vh] overflow-y-auto">
       <button onclick="document.getElementById('edit-article-modal').classList.add('hidden')" class="absolute top-4 right-4 text-ink/40 hover:text-ink font-bold">✕</button>
-      <h3 class="text-xl font-display font-medium mb-4 text-ink">Editează articolul</h3>
+      <h3 class="text-lg sm:text-xl font-display font-medium mb-3 sm:mb-4 text-ink">Editează articolul</h3>
       
-      <form id="edit-article-form" class="space-y-4">
+      <form id="edit-article-form" class="space-y-3.5 sm:space-y-4">
         <input type="hidden" id="edit-art-id">
         <div>
           <label class="block text-xs font-bold text-ink/70 mb-1">Titlu</label>
@@ -914,7 +893,7 @@
             Anulează
           </button>
           <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white px-5 py-2 rounded-full text-xs font-bold transition-colors shadow-sm">
-            Salvează modificările
+            Salvează
           </button>
         </div>
       </form>
@@ -922,30 +901,30 @@
   </div>
 
   <div id="video-wip-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-parchment border border-ink/10 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative text-center">
+    <div class="bg-parchment border border-ink/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative text-center">
       <button onclick="document.getElementById('video-wip-modal').classList.add('hidden')" class="absolute top-4 right-4 text-ink/40 hover:text-ink font-bold">✕</button>
-      <div class="w-14 h-14 rounded-2xl bg-berryRose/15 text-berryRose flex items-center justify-center text-2xl mx-auto mb-4">
+      <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-berryRose/15 text-berryRose flex items-center justify-center text-xl sm:text-2xl mx-auto mb-3 sm:mb-4">
         📹
       </div>
-      <h3 class="text-xl font-display font-medium text-ink">Consultație Video Live</h3>
+      <h3 class="text-lg sm:text-xl font-display font-medium text-ink">Consultație Video Live</h3>
       <span class="inline-block bg-berryRose/15 text-berryRose text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-berryRose/30 mt-1 mb-3">
         Funcționalitate în dezvoltare
       </span>
       <p class="text-xs text-ink/70 leading-relaxed">
         Lucrăm la integrarea cabinetului video live cu conexiune criptată direct în browser. În această perioadă, Dr. Bubbles oferă evaluări complete și opinii medicale pe baza fișierelor și analizelor transmise online.
       </p>
-      <button onclick="document.getElementById('video-wip-modal').classList.add('hidden'); window.selectConsultService('analize');" class="mt-6 w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
+      <button onclick="document.getElementById('video-wip-modal').classList.add('hidden'); window.selectConsultService('analize');" class="mt-5 sm:mt-6 w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
         Trimite analizele în format scris →
       </button>
     </div>
   </div>
 
   <div id="login-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-parchment border border-ink/10 rounded-3xl p-7 max-w-sm w-full shadow-2xl relative">
+    <div class="bg-parchment border border-ink/10 rounded-2xl sm:rounded-3xl p-6 sm:p-7 max-w-sm w-full shadow-2xl relative">
       <button onclick="toggleLoginModal(false)" class="absolute top-4 right-4 text-ink/40 hover:text-ink font-bold">✕</button>
-      <h3 class="text-xl font-display font-medium mb-1 text-ink">Autentificare medic</h3>
-      <p class="text-xs font-medium text-ink/60 mb-5">Introduceți datele de acces în portal.</p>
-      <form id="login-form" class="space-y-4">
+      <h3 class="text-lg sm:text-xl font-display font-medium mb-1 text-ink">Autentificare medic</h3>
+      <p class="text-xs font-medium text-ink/60 mb-4 sm:mb-5">Introduceți datele de acces în portal.</p>
+      <form id="login-form" class="space-y-3.5 sm:space-y-4">
         <div>
           <label class="block text-xs font-bold text-ink/70 mb-1">E-mail</label>
           <input type="email" id="doctor-email" required class="w-full border border-ink/15 rounded-xl px-3.5 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
@@ -962,9 +941,9 @@
     </div>
   </div>
 
-  <footer class="bg-ink text-parchment mt-16 py-10 text-xs font-medium relative z-20">
-    <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-1 text-center md:text-left">
+  <footer class="bg-ink text-parchment mt-12 sm:mt-16 py-8 sm:py-10 text-xs font-medium relative z-20">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
+      <div class="space-y-1">
         <p class="font-display font-semibold text-sm text-white">Dr. Bubbles · Pediatrie & analize online</p>
         <p class="text-white/60">Opinii medicale orientative bazate pe dovezi clinice.</p>
       </div>
@@ -990,6 +969,11 @@
     window.toggleLoginModal = function (show) {
       const modal = document.getElementById("login-modal");
       if (modal) modal.classList.toggle("hidden", !show);
+    };
+
+    window.toggleMobileNav = function (show) {
+      const drawer = document.getElementById("mobile-nav-drawer");
+      if (drawer) drawer.classList.toggle("hidden", !show);
     };
 
     window.historyBackFromArticle = function () {
