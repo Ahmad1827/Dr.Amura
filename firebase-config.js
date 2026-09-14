@@ -13,7 +13,8 @@ import {
   getDoc,
   setDoc,
   doc, 
-  updateDoc, 
+  updateDoc,
+  deleteDoc,
   serverTimestamp, 
   query, 
   orderBy 
@@ -54,6 +55,7 @@ export {
   setDoc,
   doc,
   updateDoc,
+  deleteDoc,
   serverTimestamp,
   query,
   orderBy,
@@ -61,3 +63,15 @@ export {
   uploadBytes,
   getDownloadURL
 };
+
+/*
+const firebaseConfig = {
+  apiKey: "AIzaSyApwlEELSG9BoxEY7aG1-kxKHyJyzL6WMU",
+  authDomain: "drbubbles-49e6f.firebaseapp.com",
+  projectId: "drbubbles-49e6f",
+  storageBucket: "drbubbles-49e6f.firebasestorage.app",
+  messagingSenderId: "62316209816",
+  appId: "1:62316209816:web:3f9b55b9be891dcabfd2ed",
+  measurementId: "G-6Z2LRMSN8D"
+};
+*/

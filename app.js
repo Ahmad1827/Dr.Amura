@@ -12,6 +12,7 @@ import {
   setDoc,
   doc,
   updateDoc,
+  deleteDoc,
   serverTimestamp,
   query,
   orderBy,
@@ -23,19 +24,22 @@ import {
 const loginForm = document.getElementById("login-form");
 const consultForm = document.getElementById("consult-form");
 const logoutBtn = document.getElementById("logout-btn");
-const loginModal = document.getElementById("login-modal");
 const casesContainer = document.getElementById("cases-list");
 const statusMsg = document.getElementById("status-msg");
 const homeArticlesGrid = document.getElementById("home-articles-grid");
 const articlesArchiveList = document.getElementById("articles-archive-list");
+const doctorArticlesManageList = document.getElementById("doctor-articles-manage-list");
 const newArticleForm = document.getElementById("new-article-form");
+const editArticleModal = document.getElementById("edit-article-modal");
+const editArticleForm = document.getElementById("edit-article-form");
 const cmsToolbar = document.getElementById("cms-toolbar");
 const saveCmsBtn = document.getElementById("save-cms-btn");
+const stopCmsBtn = document.getElementById("stop-cms-btn");
 const toggleCmsBtn = document.getElementById("toggle-cms-mode-btn");
 
 let isCmsActive = false;
 let currentArticles = [];
-let previousTab = "home";
+let currentViewingArticleId = null;
 
 const DEFAULT_ARTICLES = [
   {
@@ -61,127 +65,86 @@ const DEFAULT_ARTICLES = [
   }
 ];
 
-window.switchTab = function (tab) {
-  const tabs = ["home", "about", "services", "articles", "article-view", "consult", "doctor"];
-  tabs.forEach((t) => {
-    const el = document.getElementById("tab-" + t);
-    if (el) el.classList.add("hidden");
-  });
-
-  const active = document.getElementById("tab-" + tab);
-  if (active) active.classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
 window.openArticle = function (id, fromTab = "home") {
-  previousTab = fromTab;
+  window.previousTab = fromTab;
+  currentViewingArticleId = id;
   const article = currentArticles.find((a) => a.id === id);
   if (!article) return;
 
-  document.getElementById("reader-category").innerText = article.category;
-  document.getElementById("reader-title").innerText = article.title;
-  
+  const catEl = document.getElementById("reader-category");
+  const titleEl = document.getElementById("reader-title");
   const contentEl = document.getElementById("reader-content");
-  contentEl.innerHTML = "";
-  const paragraphs = article.content.split("\n\n");
-  paragraphs.forEach((pText) => {
-    if (pText.trim()) {
-      const p = document.createElement("p");
-      p.innerText = pText.trim();
-      contentEl.appendChild(p);
+
+  if (catEl) catEl.innerText = article.category;
+  if (titleEl) titleEl.innerText = article.title;
+  if (contentEl) {
+    contentEl.innerHTML = "";
+    const paragraphs = article.content.split("\n\n");
+    paragraphs.forEach((pText) => {
+      if (pText.trim()) {
+        const p = document.createElement("p");
+        p.innerText = pText.trim();
+        contentEl.appendChild(p);
+      }
+    });
+  }
+
+  const doctorActions = document.getElementById("doctor-article-actions");
+  if (doctorActions) {
+    if (auth.currentUser) {
+      doctorActions.classList.remove("hidden");
+    } else {
+      doctorActions.classList.add("hidden");
     }
-  });
+  }
 
   window.switchTab("article-view");
 };
 
-window.historyBackFromArticle = function () {
-  window.switchTab(previousTab || "home");
+window.openEditModal = function (id) {
+  const article = currentArticles.find((a) => a.id === id);
+  if (!article) return;
+
+  document.getElementById("edit-art-id").value = article.id;
+  document.getElementById("edit-art-title").value = article.title;
+  document.getElementById("edit-art-category").value = article.category;
+  document.getElementById("edit-art-excerpt").value = article.excerpt;
+  document.getElementById("edit-art-content").value = article.content;
+
+  if (editArticleModal) editArticleModal.classList.remove("hidden");
 };
 
-window.toggleLoginModal = function (show) {
-  if (!loginModal) return;
-  loginModal.classList.toggle("hidden", !show);
-};
+window.deleteArticlePrompt = async function (id) {
+  const article = currentArticles.find((a) => a.id === id);
+  const title = article ? article.title : "acest articol";
+  
+  if (!confirm(`Sigur doriți să ștergeți articolul "${title}"?`)) return;
 
-async function loadCmsContent() {
   try {
-    const docRef = doc(db, "settings", "site_content");
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      const data = snap.data();
-      document.querySelectorAll("[data-cms]").forEach((el) => {
-        const key = el.getAttribute("data-cms");
-        if (data[key]) el.innerText = data[key];
-      });
+    await deleteDoc(doc(db, "articles", id));
+    alert("Articolul a fost șters!");
+    if (window.currentViewingArticleId === id) {
+      window.switchTab("articles");
     }
-  } catch (err) {}
-}
-
-function toggleCmsEditing() {
-  isCmsActive = !isCmsActive;
-  const elements = document.querySelectorAll("[data-cms]");
-
-  elements.forEach((el) => {
-    el.contentEditable = isCmsActive ? "true" : "false";
-    el.classList.toggle("cms-editable-active", isCmsActive);
-  });
-
-  if (isCmsActive) {
-    cmsToolbar.classList.remove("hidden");
-    if (toggleCmsBtn) toggleCmsBtn.innerText = "Oprește editarea";
-    window.switchTab("home");
-  } else {
-    cmsToolbar.classList.add("hidden");
-    if (toggleCmsBtn) toggleCmsBtn.innerText = "Editează textele site-ului";
-  }
-}
-
-if (toggleCmsBtn) {
-  toggleCmsBtn.addEventListener("click", toggleCmsEditing);
-}
-
-if (saveCmsBtn) {
-  saveCmsBtn.addEventListener("click", async () => {
-    saveCmsBtn.innerText = "Se salvează...";
-    const data = {};
-    document.querySelectorAll("[data-cms]").forEach((el) => {
-      const key = el.getAttribute("data-cms");
-      data[key] = el.innerText.trim();
-    });
-
-    try {
-      await setDoc(doc(db, "settings", "site_content"), data, { merge: true });
-      saveCmsBtn.innerText = "Salvat ✓";
-      setTimeout(() => {
-        saveCmsBtn.innerText = "Salvează textele";
-      }, 2000);
-    } catch (err) {
-      alert("Eroare: " + err.message);
-      saveCmsBtn.innerText = "Salvează textele";
-    }
-  });
-}
-
-async function loadArticles() {
-  try {
-    const q = query(collection(db, "articles"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      currentArticles = DEFAULT_ARTICLES;
-    } else {
-      currentArticles = [];
-      snapshot.forEach((d) => {
-        currentArticles.push({ id: d.id, ...d.data() });
-      });
-    }
-
-    renderArticles();
+    await loadArticles();
   } catch (err) {
-    currentArticles = DEFAULT_ARTICLES;
-    renderArticles();
+    alert("Eroare la ștergere: " + err.message);
   }
+};
+
+const readerEditBtn = document.getElementById("reader-edit-btn");
+const readerDeleteBtn = document.getElementById("reader-delete-btn");
+
+if (readerEditBtn) {
+  readerEditBtn.addEventListener("click", () => {
+    if (currentViewingArticleId) window.openEditModal(currentViewingArticleId);
+  });
+}
+
+if (readerDeleteBtn) {
+  readerDeleteBtn.addEventListener("click", () => {
+    if (currentViewingArticleId) window.deleteArticlePrompt(currentViewingArticleId);
+  });
 }
 
 function renderArticles() {
@@ -227,6 +190,132 @@ function renderArticles() {
       articlesArchiveList.appendChild(row);
     });
   }
+
+  if (doctorArticlesManageList) {
+    doctorArticlesManageList.innerHTML = "";
+    currentArticles.forEach((art) => {
+      const item = document.createElement("div");
+      item.className = "py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
+      item.innerHTML = `
+        <div>
+          <span class="text-[10px] font-bold text-leafGreen uppercase">${art.category}</span>
+          <h5 class="text-sm font-display font-semibold text-ink">${art.title}</h5>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="window.openArticle('${art.id}', 'doctor')" class="text-xs font-bold text-ink/70 hover:text-ink px-2 py-1">
+            Vezi
+          </button>
+          <button onclick="window.openEditModal('${art.id}')" class="text-xs font-bold bg-warmSun/30 border border-warmSun/60 text-ink px-3 py-1 rounded-full hover:bg-warmSun/50">
+            Editează
+          </button>
+          <button onclick="window.deleteArticlePrompt('${art.id}')" class="text-xs font-bold bg-berryRose/10 border border-berryRose/30 text-berryRose px-3 py-1 rounded-full hover:bg-berryRose/20">
+            Șterge
+          </button>
+        </div>
+      `;
+      doctorArticlesManageList.appendChild(item);
+    });
+  }
+}
+
+async function loadArticles() {
+  try {
+    const q = query(collection(db, "articles"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      currentArticles = DEFAULT_ARTICLES;
+    } else {
+      currentArticles = [];
+      snapshot.forEach((d) => {
+        currentArticles.push({ id: d.id, ...d.data() });
+      });
+    }
+  } catch (err) {
+    currentArticles = DEFAULT_ARTICLES;
+  }
+  renderArticles();
+}
+
+async function loadCmsContent() {
+  try {
+    const docRef = doc(db, "settings", "site_content");
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      document.querySelectorAll("[data-cms]").forEach((el) => {
+        const key = el.getAttribute("data-cms");
+        if (data[key]) el.innerText = data[key];
+      });
+    }
+  } catch (err) {}
+}
+
+function toggleCmsEditing() {
+  isCmsActive = !isCmsActive;
+  const elements = document.querySelectorAll("[data-cms]");
+
+  elements.forEach((el) => {
+    el.contentEditable = isCmsActive ? "true" : "false";
+    el.classList.toggle("cms-editable-active", isCmsActive);
+  });
+
+  if (isCmsActive) {
+    if (cmsToolbar) cmsToolbar.classList.remove("hidden");
+    if (toggleCmsBtn) toggleCmsBtn.innerText = "Oprește editarea";
+    window.switchTab("home");
+  } else {
+    if (cmsToolbar) cmsToolbar.classList.add("hidden");
+    if (toggleCmsBtn) toggleCmsBtn.innerText = "Editează textele site-ului";
+  }
+}
+
+if (toggleCmsBtn) toggleCmsBtn.addEventListener("click", toggleCmsEditing);
+if (stopCmsBtn) stopCmsBtn.addEventListener("click", toggleCmsEditing);
+
+document.addEventListener("click", (e) => {
+  if (!isCmsActive) return;
+
+  if (e.target.closest("#cms-toolbar") || e.target.closest("#toggle-cms-mode-btn")) {
+    return;
+  }
+
+  const cmsTarget = e.target.closest("[data-cms]");
+  if (cmsTarget) {
+    e.preventDefault();
+    e.stopPropagation();
+    cmsTarget.focus();
+  }
+}, true);
+
+document.addEventListener("keydown", (e) => {
+  if (!isCmsActive) return;
+  if (e.target.hasAttribute("data-cms") && e.key === "Enter") {
+    e.preventDefault();
+    e.target.blur();
+  }
+});
+
+if (saveCmsBtn) {
+  saveCmsBtn.addEventListener("click", async () => {
+    saveCmsBtn.innerText = "Se salvează...";
+    const data = {};
+    document.querySelectorAll("[data-cms]").forEach((el) => {
+      const key = el.getAttribute("data-cms");
+      data[key] = el.innerText.trim();
+    });
+
+    try {
+      await setDoc(doc(db, "settings", "site_content"), data, { merge: true });
+      saveCmsBtn.innerText = "Salvat ✓";
+      setTimeout(() => {
+        saveCmsBtn.innerText = "Salvează textele";
+      }, 2000);
+    } catch (err) {
+      alert("Eroare: " + err.message);
+      saveCmsBtn.innerText = "Salvează textele";
+    }
+  });
 }
 
 if (newArticleForm) {
@@ -254,25 +343,63 @@ if (newArticleForm) {
   });
 }
 
-onAuthStateChanged(auth, (user) => {
-  const doctorNavBtn = document.getElementById("doctor-nav-btn");
+if (editArticleForm) {
+  editArticleForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("edit-art-id").value;
+    const title = document.getElementById("edit-art-title").value;
+    const category = document.getElementById("edit-art-category").value;
+    const excerpt = document.getElementById("edit-art-excerpt").value;
+    const content = document.getElementById("edit-art-content").value;
 
-  if (user) {
-    if (doctorNavBtn) {
-      doctorNavBtn.innerText = "Panou medic";
-      doctorNavBtn.onclick = () => window.switchTab("doctor");
+    try {
+      await updateDoc(doc(db, "articles", id), {
+        title,
+        category,
+        excerpt,
+        content,
+        updatedAt: serverTimestamp()
+      });
+
+      if (editArticleModal) editArticleModal.classList.add("hidden");
+      alert("Modificările au fost salvate!");
+
+      await loadArticles();
+      if (currentViewingArticleId === id) {
+        window.openArticle(id, window.previousTab || "home");
+      }
+    } catch (err) {
+      alert("Eroare la actualizare: " + err.message);
     }
-    if (logoutBtn) logoutBtn.classList.remove("hidden");
-    loadCases();
-  } else {
-    if (doctorNavBtn) {
-      doctorNavBtn.innerText = "Acces medic";
-      doctorNavBtn.onclick = () => window.toggleLoginModal(true);
+  });
+}
+
+try {
+  onAuthStateChanged(auth, (user) => {
+    const doctorNavBtn = document.getElementById("doctor-nav-btn");
+    const doctorActions = document.getElementById("doctor-article-actions");
+
+    if (user) {
+      if (doctorNavBtn) {
+        doctorNavBtn.innerText = "Panou medic";
+        doctorNavBtn.onclick = () => window.switchTab("doctor");
+      }
+      if (doctorActions) doctorActions.classList.remove("hidden");
+      if (logoutBtn) logoutBtn.classList.remove("hidden");
+      loadCases();
+      renderArticles();
+    } else {
+      if (doctorNavBtn) {
+        doctorNavBtn.innerText = "Acces medic";
+        doctorNavBtn.onclick = () => window.toggleLoginModal(true);
+      }
+      if (doctorActions) doctorActions.classList.add("hidden");
+      if (logoutBtn) logoutBtn.classList.add("hidden");
+      if (isCmsActive) toggleCmsEditing();
+      renderArticles();
     }
-    if (logoutBtn) logoutBtn.classList.add("hidden");
-    if (isCmsActive) toggleCmsEditing();
-  }
-});
+  });
+} catch (err) {}
 
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -283,20 +410,24 @@ if (loginForm) {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      errorEl.classList.add("hidden");
+      if (errorEl) errorEl.classList.add("hidden");
       loginForm.reset();
       window.toggleLoginModal(false);
       window.switchTab("doctor");
     } catch (err) {
-      errorEl.innerText = "Date incorecte de conectare.";
-      errorEl.classList.remove("hidden");
+      if (errorEl) {
+        errorEl.innerText = "Date incorecte de conectare.";
+        errorEl.classList.remove("hidden");
+      }
     }
   });
 }
 
 if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (err) {}
     window.switchTab("home");
   });
 }
@@ -308,26 +439,35 @@ if (consultForm) {
     submitBtn.disabled = true;
     submitBtn.innerText = "Se încarcă dosarul...";
     statusMsg.classList.remove("hidden");
-    statusMsg.innerText = "Se transmit fișierele către Dr. Bubbles...";
+    statusMsg.innerText = "Se transmit datele către Dr. Bubbles...";
 
     try {
+      const serviceType = document.getElementById("selected-service-input").value || "analize";
       const contact = document.getElementById("contact").value;
       const age = document.getElementById("age").value;
       const weight = document.getElementById("weight").value;
       const symptoms = document.getElementById("symptoms").value;
-      const file = document.getElementById("file").files[0];
+      const fileInput = document.getElementById("file");
+      const file = fileInput.files[0];
 
-      const storageReference = ref(storage, `cases/${Date.now()}_${file.name}`);
-      const uploadSnapshot = await uploadBytes(storageReference, file);
-      const fileUrl = await getDownloadURL(uploadSnapshot.ref);
+      let fileUrl = null;
+      let fileName = null;
+
+      if (file) {
+        const storageReference = ref(storage, `cases/${Date.now()}_${file.name}`);
+        const uploadSnapshot = await uploadBytes(storageReference, file);
+        fileUrl = await getDownloadURL(uploadSnapshot.ref);
+        fileName = file.name;
+      }
 
       await addDoc(collection(db, "consultations"), {
+        serviceType,
         contact,
         childAge: age,
         childWeight: weight,
         symptoms,
         fileUrl,
-        fileName: file.name,
+        fileName,
         status: "in_asteptare",
         createdAt: serverTimestamp()
       });
@@ -362,19 +502,32 @@ async function loadCases() {
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
       const isDone = data.status === "finalizat";
+      const serviceName = data.serviceType === "externare" 
+        ? "Bilet Externare" 
+        : data.serviceType === "consiliere" 
+          ? "Consiliere" 
+          : "Analize Laborator";
+
       const card = document.createElement("div");
       card.className = "bg-white/80 border border-ink/10 rounded-2xl p-6 flex flex-col gap-3 shadow-sm";
       card.innerHTML = `
         <div class="flex justify-between items-start gap-4">
           <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold ${isDone ? "bg-leafLight text-leafGreenDark" : "bg-warmSun/25 text-amber-900"}">
-              ${isDone ? "Rezolvat" : "În așteptare"}
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isDone ? "bg-leafLight text-leafGreenDark" : "bg-warmSun/25 text-amber-900"}">
+                ${isDone ? "Rezolvat" : "În așteptare"}
+              </span>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
+                ${serviceName}
+              </span>
+            </div>
             <h4 class="text-lg font-display font-semibold mt-2 text-ink">${data.contact}</h4>
           </div>
-          <a href="${data.fileUrl}" target="_blank" class="text-xs font-bold text-leafGreen link-underline shrink-0">
-            Deschide fișierul
-          </a>
+          ${data.fileUrl ? `
+            <a href="${data.fileUrl}" target="_blank" class="text-xs font-bold text-leafGreen link-underline shrink-0">
+              Deschide fișierul
+            </a>
+          ` : `<span class="text-[11px] font-medium text-ink/40">Fără fișier</span>`}
         </div>
         <p class="text-xs font-medium text-ink/70">
           <b>Vârstă:</b> ${data.childAge} &nbsp;·&nbsp; <b>Greutate:</b> ${data.childWeight || "nespecificată"}

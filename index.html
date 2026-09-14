@@ -61,40 +61,40 @@
 
     @keyframes wanderOne {
       0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-      25% { transform: translate3d(18px, -28px, 0) rotate(14deg) scale(1.08); }
-      50% { transform: translate3d(-14px, -52px, 0) rotate(-10deg) scale(0.96); }
-      75% { transform: translate3d(12px, -24px, 0) rotate(8deg) scale(1.04); }
+      25% { transform: translate3d(24px, -36px, 0) rotate(16deg) scale(1.1); }
+      50% { transform: translate3d(-18px, -65px, 0) rotate(-12deg) scale(0.94); }
+      75% { transform: translate3d(16px, -30px, 0) rotate(10deg) scale(1.05); }
       100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
     }
 
     @keyframes wanderTwo {
-      0% { transform: translate3d(0, 0, 0) rotate(-6deg) scale(1.02); }
-      30% { transform: translate3d(-20px, 32px, 0) rotate(18deg) scale(0.92); }
-      60% { transform: translate3d(16px, -36px, 0) rotate(-14deg) scale(1.07); }
-      85% { transform: translate3d(-8px, -12px, 0) rotate(6deg) scale(0.98); }
-      100% { transform: translate3d(0, 0, 0) rotate(-6deg) scale(1.02); }
+      0% { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1.03); }
+      30% { transform: translate3d(-26px, 42px, 0) rotate(22deg) scale(0.9); }
+      60% { transform: translate3d(22px, -45px, 0) rotate(-18deg) scale(1.1); }
+      85% { transform: translate3d(-12px, -15px, 0) rotate(8deg) scale(0.96); }
+      100% { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1.03); }
     }
 
     @keyframes wanderThree {
-      0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.95); }
-      35% { transform: translate3d(-18px, -35px, 0) rotate(-18deg) scale(1.1); }
-      65% { transform: translate3d(22px, 20px, 0) rotate(12deg) scale(0.9); }
-      100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.95); }
+      0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.93); }
+      35% { transform: translate3d(-24px, -45px, 0) rotate(-22deg) scale(1.12); }
+      65% { transform: translate3d(28px, 28px, 0) rotate(16deg) scale(0.88); }
+      100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.93); }
     }
 
     @keyframes iridescentShimmer {
       0%, 100% { filter: hue-rotate(0deg); }
-      50% { filter: hue-rotate(35deg); }
+      50% { filter: hue-rotate(45deg); }
     }
 
     .bubble-dynamic-1 {
-      animation: wanderOne 8s ease-in-out infinite, iridescentShimmer 12s ease-in-out infinite;
+      animation: wanderOne 7.5s ease-in-out infinite, iridescentShimmer 11s ease-in-out infinite;
     }
     .bubble-dynamic-2 {
-      animation: wanderTwo 10s ease-in-out infinite, iridescentShimmer 14s ease-in-out infinite;
+      animation: wanderTwo 9.5s ease-in-out infinite, iridescentShimmer 13s ease-in-out infinite;
     }
     .bubble-dynamic-3 {
-      animation: wanderThree 9s ease-in-out infinite, iridescentShimmer 10s ease-in-out infinite;
+      animation: wanderThree 8.5s ease-in-out infinite, iridescentShimmer 9s ease-in-out infinite;
     }
 
     .note-card {
@@ -176,6 +176,9 @@
     </div>
     <button id="save-cms-btn" class="bg-leafGreen hover:bg-leafGreenDark text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md">
       Salvează textele
+    </button>
+    <button id="stop-cms-btn" class="bg-white/10 hover:bg-white/20 text-parchment text-xs font-bold px-3 py-2 rounded-xl transition-all border border-white/15">
+      Oprește editarea
     </button>
   </div>
 
@@ -274,31 +277,31 @@
       </div>
 
       <div class="flex flex-wrap items-stretch gap-6 justify-center lg:justify-start">
-        <div onclick="switchTab('consult')" class="note-card cursor-pointer bg-leafGreen text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-2 shadow-sm flex flex-col justify-between">
+        <div onclick="window.selectConsultService('analize')" class="note-card cursor-pointer bg-leafGreen text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-2 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-leafLight block mb-1">Etapa 1</span>
-            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card1_title">Dosar pacient</h3>
-            <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card1_desc">Descrie simptomele și istoricul pentru o evaluare clinică completă.</p>
+            <span class="text-xs font-bold uppercase tracking-wider text-leafLight block mb-1">Laborator</span>
+            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card1_title">Interpretare analize</h3>
+            <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card1_desc">Trimite hemoleucograma, CRP, urocultura și sumarul pentru verificare.</p>
           </div>
-          <span class="text-xs font-bold text-leafLight mt-4 inline-block">Deschide formularul →</span>
+          <span class="text-xs font-bold text-leafLight mt-4 inline-block">Trimite analizele →</span>
         </div>
 
-        <div onclick="switchTab('consult')" class="note-card cursor-pointer bg-coralPop text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-72 rotate-1 sm:mt-4 shadow-sm flex flex-col justify-between">
+        <div onclick="window.selectConsultService('externare')" class="note-card cursor-pointer bg-coralPop text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-72 rotate-1 sm:mt-4 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-parchment/80 block mb-1">Analize</span>
-            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card2_title">Analiză rezultate</h3>
-            <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card2_desc">Explic pe înțeles hemoleucograma, inflamațiile, probele hepatice și de urină.</p>
+            <span class="text-xs font-bold uppercase tracking-wider text-parchment/80 block mb-1">Externare</span>
+            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card2_title">A doua opinie</h3>
+            <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card2_desc">Reevaluare diagnostic de spital și schema de tratament la domiciliu.</p>
           </div>
-          <span class="text-xs font-bold text-parchment mt-4 inline-block">Trimite documentele →</span>
+          <span class="text-xs font-bold text-parchment mt-4 inline-block">Încarcă biletul →</span>
         </div>
 
-        <div onclick="switchTab('services')" class="note-card cursor-pointer bg-warmSun text-ink rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-1 shadow-sm flex flex-col justify-between">
+        <div onclick="window.selectConsultService('consiliere')" class="note-card cursor-pointer bg-warmSun text-ink rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-1 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-ink/60 block mb-1">Ghid util</span>
-            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card3_title">Ghid febră & doze</h3>
-            <p class="text-xs text-ink/80 mt-2 leading-relaxed" data-cms="card3_desc">Calculul dozei de antitermic după kilograme, nu după vârstă.</p>
+            <span class="text-xs font-bold uppercase tracking-wider text-ink/60 block mb-1">Consiliere</span>
+            <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card3_title">Bebeluși & Părinți</h3>
+            <p class="text-xs text-ink/80 mt-2 leading-relaxed" data-cms="card3_desc">Sfaturi despre diversificare, greutate, febră și semnale de alarmă.</p>
           </div>
-          <span class="text-xs font-bold text-leafGreenDark mt-4 inline-block">Vezi detaliile →</span>
+          <span class="text-xs font-bold text-leafGreenDark mt-4 inline-block">Adresează o întrebare →</span>
         </div>
       </div>
 
@@ -406,7 +409,7 @@
               Hemoleucogramă completă, anemie feriprivă, markeri de inflamație (VSH, PCR), profil biochimic și sumar de urină. Primești explicația detaliată a fiecărei deviații.
             </p>
           </div>
-          <button onclick="switchTab('consult')" class="mt-8 bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
+          <button onclick="window.selectConsultService('analize')" class="mt-8 bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
             Trimite analizele →
           </button>
         </div>
@@ -421,7 +424,7 @@
               Scheme de începere a hranei solide, interpretarea scaunelor modificate, gestionarea episoadelor de constipație sau a curbelor lente de creștere în greutate.
             </p>
           </div>
-          <button onclick="switchTab('consult')" class="mt-8 bg-coralPop hover:bg-coralDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
+          <button onclick="window.selectConsultService('consiliere')" class="mt-8 bg-coralPop hover:bg-coralDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
             Adresează o întrebare →
           </button>
         </div>
@@ -436,7 +439,7 @@
               Lămurirea diagnosticului stabilit la camera de gardă, verificarea tratamentului medicamentos prescris la externare și plan de monitorizare la domiciliu.
             </p>
           </div>
-          <button onclick="switchTab('consult')" class="mt-8 bg-warmSun text-ink hover:bg-amber-400 py-3 rounded-full text-xs font-bold transition-all shadow-sm">
+          <button onclick="window.selectConsultService('externare')" class="mt-8 bg-warmSun text-ink hover:bg-amber-400 py-3 rounded-full text-xs font-bold transition-all shadow-sm">
             Încarcă dosarul →
           </button>
         </div>
@@ -459,9 +462,19 @@
     </section>
 
     <section id="tab-article-view" class="hidden py-10 max-w-3xl mx-auto space-y-8">
-      <button onclick="window.historyBackFromArticle()" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
-        ← Înapoi la ghiduri
-      </button>
+      <div class="flex items-center justify-between">
+        <button onclick="window.historyBackFromArticle()" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
+          ← Înapoi la ghiduri
+        </button>
+        <div id="doctor-article-actions" class="hidden flex items-center gap-2">
+          <button id="reader-edit-btn" class="bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 px-3 py-1 rounded-full text-xs font-bold transition-colors">
+            Editează articolul
+          </button>
+          <button id="reader-delete-btn" class="bg-berryRose/10 text-berryRose border border-berryRose/30 hover:bg-berryRose/20 px-3 py-1 rounded-full text-xs font-bold transition-colors">
+            Șterge articolul
+          </button>
+        </div>
+      </div>
 
       <div class="bg-white/85 rounded-3xl border border-ink/10 p-8 sm:p-12 shadow-sm space-y-6">
         <div>
@@ -488,20 +501,96 @@
       </div>
     </section>
 
-    <section id="tab-consult" class="hidden max-w-2xl mx-auto py-12">
-      <div class="bg-white/80 backdrop-blur-sm rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-sm relative">
-        <div class="mb-6 pb-6 border-b border-ink/10 flex items-center justify-between">
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Formular confidențial</span>
-            <h2 class="text-2xl sm:text-3xl font-display font-medium text-ink mt-1">Încarcă dosarul medical</h2>
-            <p class="text-xs font-semibold text-ink/60 mt-1">Datele tale sunt trimise securizat către medicul pediatru.</p>
+    <section id="tab-consult" class="hidden max-w-3xl mx-auto py-12 space-y-8">
+      
+      <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Cabinet Online</span>
+          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Alege tipul de solicitare</h2>
+          <p class="text-sm text-ink/60 mt-1">Selectează serviciul dorit pentru a deschide formularul dedicat.</p>
+        </div>
+        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
+          ← Înapoi acasă
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <div onclick="window.selectConsultService('analize')" id="service-card-analize" class="service-selector-card cursor-pointer bg-white/90 border-2 border-leafGreen rounded-2xl p-5 shadow-sm hover:border-leafGreen transition-all flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-leafGreen text-white flex items-center justify-center text-lg">
+              🧪
+            </div>
+            <h3 class="font-display font-semibold text-lg text-ink">Interpretare Analize Medicale</h3>
+            <p class="text-xs text-ink/70 leading-relaxed">
+              Hemoleucograme, valori inflamatorii (VSH, PCR), biochimie sau sumar de urină. Atașarea documentului este necesară.
+            </p>
           </div>
-          <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink transition-colors">
-            ← Înapoi
-          </button>
+          <span class="text-xs font-bold text-leafGreen mt-4 inline-block">Selectat ✓</span>
+        </div>
+
+        <div onclick="window.selectConsultService('externare')" id="service-card-externare" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-coralPop transition-all flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-coralPop text-white flex items-center justify-center text-lg">
+              📋
+            </div>
+            <h3 class="font-display font-semibold text-lg text-ink">A Doua Opinie Bilet Externare</h3>
+            <p class="text-xs text-ink/70 leading-relaxed">
+              Evaluarea diagnosticului din spital sau camera de gardă și explicarea tratamentului recomandat la domiciliu.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-coralPop mt-4 inline-block">Alege acest serviciu →</span>
+        </div>
+
+        <div onclick="window.selectConsultService('consiliere')" id="service-card-consiliere" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-warmSun transition-all flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-warmSun text-ink flex items-center justify-center text-lg">
+              🍼
+            </div>
+            <h3 class="font-display font-semibold text-lg text-ink">Consiliere Bebeluşi & Tranzit</h3>
+            <p class="text-xs text-ink/70 leading-relaxed">
+              Întrebări despre diversificare, apetit, scaune sau pusee. Atașarea documentelor medicale este opțională.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-amber-800 mt-4 inline-block">Alege acest serviciu →</span>
+        </div>
+
+        <div onclick="window.showVideoCallWipModal()" class="cursor-pointer bg-gradient-to-br from-white/40 to-slate-100/60 border-2 border-dashed border-ink/20 rounded-2xl p-5 shadow-xs flex flex-col justify-between relative overflow-hidden group">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="w-10 h-10 rounded-xl bg-skyMist text-ink flex items-center justify-center text-lg">
+                📹
+              </div>
+              <span class="bg-berryRose/15 text-berryRose text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-berryRose/30">
+                În curând / În lucru 🚧
+              </span>
+            </div>
+            <h3 class="font-display font-semibold text-lg text-ink/80 group-hover:text-ink transition-colors">
+              Consultație Video Live 1-la-1
+            </h3>
+            <p class="text-xs text-ink/60 leading-relaxed">
+              Discuție video directă securizată cu medicul pediatru, direct în browser, fără instalare de aplicații.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-berryRose mt-4 inline-block">Află detalii →</span>
+        </div>
+
+      </div>
+
+      <div class="bg-white/85 backdrop-blur-sm rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-sm relative">
+        <div class="mb-6 pb-6 border-b border-ink/10">
+          <span id="form-service-badge" class="inline-block text-xs font-bold uppercase tracking-wider text-leafGreen bg-leafLight/70 px-3 py-1 rounded-full mb-2">
+            Serviciu selectat: Interpretare Analize Medicale
+          </span>
+          <h3 id="form-service-title" class="text-2xl font-display font-medium text-ink">Completează datele copilului</h3>
+          <p id="form-service-desc" class="text-xs font-semibold text-ink/60 mt-1">
+            Datele tale sunt trimise securizat către medicul pediatru. Vei primi răspunsul pe adresa ta de e-mail.
+          </p>
         </div>
 
         <form id="consult-form" class="space-y-5">
+          <input type="hidden" id="selected-service-input" value="analize">
+
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1.5">Adresă de e-mail părinte (pentru primirea evaluării)</label>
             <input type="email" id="contact" required placeholder="nume.prenume@email.ro" class="w-full border border-ink/15 rounded-xl px-4 py-3 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none transition-colors">
@@ -524,7 +613,7 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-ink/70 mb-1.5">Atașează buletinul de analize sau raportul medical (PDF, poze)</label>
+            <label id="file-label" class="block text-xs font-bold text-ink/70 mb-1.5">Atașează buletinul de analize sau raportul medical (PDF, poze) *</label>
             <div class="border-2 border-dashed border-ink/20 bg-parchment/60 rounded-2xl p-5 text-center">
               <input type="file" id="file" required class="w-full text-xs font-semibold text-ink/70 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-leafGreen file:text-white hover:file:bg-leafGreenDark cursor-pointer">
             </div>
@@ -545,7 +634,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-ink/10">
         <div>
           <h2 class="text-2xl font-display font-medium text-ink">Panou administrare medic</h2>
-          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților și publică articole noi.</p>
+          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților și articolele publicate.</p>
         </div>
         <div class="flex items-center gap-3">
           <button id="toggle-cms-mode-btn" class="px-4 py-2 rounded-full text-xs font-bold bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 transition-colors">
@@ -576,12 +665,17 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1">Conținut Complet al Articolului</label>
-            <textarea id="new-art-content" rows="6" required placeholder="Scrie textul complet aici. Poți separa paragrafele prin linii noi..." class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
+            <textarea id="new-art-content" rows="6" required placeholder="Scrie textul complet aici. Separă paragrafele prin linii noi..." class="w-full border border-ink/15 rounded-xl px-4 py-2.5 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
           </div>
           <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-3 rounded-full text-xs transition-colors shadow-sm">
             Publică articolul pe prima pagină
           </button>
         </form>
+      </div>
+
+      <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-xl font-display font-semibold text-ink">Ghiduri & Articole existente</h3>
+        <div id="doctor-articles-manage-list" class="divide-y divide-ink/10"></div>
       </div>
 
       <div>
@@ -591,6 +685,62 @@
     </section>
 
   </main>
+
+  <div id="edit-article-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-parchment border border-ink/10 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative">
+      <button onclick="document.getElementById('edit-article-modal').classList.add('hidden')" class="absolute top-4 right-4 text-ink/40 hover:text-ink font-bold">✕</button>
+      <h3 class="text-xl font-display font-medium mb-4 text-ink">Editează articolul</h3>
+      
+      <form id="edit-article-form" class="space-y-4">
+        <input type="hidden" id="edit-art-id">
+        <div>
+          <label class="block text-xs font-bold text-ink/70 mb-1">Titlu</label>
+          <input type="text" id="edit-art-title" required class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-ink/70 mb-1">Categorie</label>
+            <input type="text" id="edit-art-category" required class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink/70 mb-1">Rezumat Scurt</label>
+            <input type="text" id="edit-art-excerpt" required class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-ink/70 mb-1">Conținut Complet</label>
+          <textarea id="edit-art-content" rows="6" required class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" onclick="document.getElementById('edit-article-modal').classList.add('hidden')" class="px-4 py-2 rounded-full text-xs font-bold text-ink/60 hover:text-ink">
+            Anulează
+          </button>
+          <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white px-5 py-2 rounded-full text-xs font-bold transition-colors shadow-sm">
+            Salvează modificările
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="video-wip-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-parchment border border-ink/10 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative text-center">
+      <button onclick="document.getElementById('video-wip-modal').classList.add('hidden')" class="absolute top-4 right-4 text-ink/40 hover:text-ink font-bold">✕</button>
+      <div class="w-14 h-14 rounded-2xl bg-berryRose/15 text-berryRose flex items-center justify-center text-2xl mx-auto mb-4">
+        📹
+      </div>
+      <h3 class="text-xl font-display font-medium text-ink">Consultație Video Live</h3>
+      <span class="inline-block bg-berryRose/15 text-berryRose text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-berryRose/30 mt-1 mb-3">
+        Funcționalitate în dezvoltare
+      </span>
+      <p class="text-xs text-ink/70 leading-relaxed">
+        Lucrăm la integrarea cabinetului video live cu conexiune criptată direct în browser. În această perioadă, Dr. Bubbles oferă evaluări complete și opinii medicale pe baza fișierelor și analizelor transmise online.
+      </p>
+      <button onclick="document.getElementById('video-wip-modal').classList.add('hidden'); window.selectConsultService('analize');" class="mt-6 w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
+        Trimite analizele în format scris →
+      </button>
+    </div>
+  </div>
 
   <div id="login-modal" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-parchment border border-ink/10 rounded-3xl p-7 max-w-sm w-full shadow-2xl relative">
@@ -623,6 +773,7 @@
       <p class="text-white/40">© 2026 Dr. Bubbles. Toate drepturile rezervate.</p>
     </div>
   </footer>
+
   <script>
     window.previousTab = "home";
 
@@ -646,7 +797,60 @@
     window.historyBackFromArticle = function () {
       window.switchTab(window.previousTab || "home");
     };
-  </script>
 
+    window.showVideoCallWipModal = function () {
+      const modal = document.getElementById("video-wip-modal");
+      if (modal) modal.classList.remove("hidden");
+    };
+
+    window.selectConsultService = function (type) {
+      window.switchTab("consult");
+      const serviceInput = document.getElementById("selected-service-input");
+      if (serviceInput) serviceInput.value = type;
+
+      const cards = {
+        analize: document.getElementById("service-card-analize"),
+        externare: document.getElementById("service-card-externare"),
+        consiliere: document.getElementById("service-card-consiliere")
+      };
+
+      Object.keys(cards).forEach((key) => {
+        if (!cards[key]) return;
+        if (key === type) {
+          cards[key].classList.remove("bg-white/60", "border-ink/10");
+          cards[key].classList.add("bg-white/95", "border-leafGreen");
+        } else {
+          cards[key].classList.remove("bg-white/95", "border-leafGreen");
+          cards[key].classList.add("bg-white/60", "border-ink/10");
+        }
+      });
+
+      const badge = document.getElementById("form-service-badge");
+      const title = document.getElementById("form-service-title");
+      const desc = document.getElementById("form-service-desc");
+      const fileInput = document.getElementById("file");
+      const fileLabel = document.getElementById("file-label");
+
+      if (type === "analize") {
+        badge.innerText = "Serviciu selectat: Interpretare Analize Medicale";
+        title.innerText = "Trimite buletinul de analize";
+        desc.innerText = "Încarcă rezultatele de laborator (hemoleucograme, uroculturi, PCR, biochimie).";
+        fileInput.required = true;
+        fileLabel.innerText = "Atașează buletinul de analize (PDF, imagini) *";
+      } else if (type === "externare") {
+        badge.innerText = "Serviciu selectat: A Doua Opinie Bilet Externare";
+        title.innerText = "Trimite biletul de ieșire din spital";
+        desc.innerText = "Încarcă biletul de externare sau scrisoarea medicală pentru revizuirea diagnosticului și a tratamentului.";
+        fileInput.required = true;
+        fileLabel.innerText = "Atașează biletul de externare (PDF, imagini) *";
+      } else if (type === "consiliere") {
+        badge.innerText = "Serviciu selectat: Consiliere Bebeluşi & Dezvoltare";
+        title.innerText = "Adresează întrebarea medicală";
+        desc.innerText = "Întrebări legate de diversificare, tranzit intestinal, apetit sau parametri de creștere.";
+        fileInput.required = false;
+        fileLabel.innerText = "Atașează fișiere dacă este cazul (opțional)";
+      }
+    };
+  </script>
 </body>
 </html>
