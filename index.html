@@ -6,6 +6,7 @@
   <title>Dr. Bubbles - Pediatrie & Telemedicină</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Karla:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -216,7 +217,7 @@
       <nav class="hidden md:flex items-center gap-4 text-sm font-semibold">
         <button onclick="switchTab('home')" class="link-underline py-1 text-ink/80 hover:text-ink">Acasă</button>
         <button onclick="switchTab('about')" class="link-underline py-1 text-ink/80 hover:text-ink">Despre medic</button>
-        <button onclick="switchTab('services')" class="link-underline py-1 text-ink/80 hover:text-ink">Servicii</button>
+        <button onclick="switchTab('consult')" class="link-underline py-1 font-bold text-leafGreen hover:text-leafGreenDark">Servicii</button>
         <button onclick="switchTab('articles')" class="link-underline py-1 text-ink/80 hover:text-ink">Ghiduri & Articole</button>
       </nav>
 
@@ -279,7 +280,10 @@
       <div class="flex flex-wrap items-stretch gap-6 justify-center lg:justify-start">
         <div onclick="window.selectConsultService('analize')" class="note-card cursor-pointer bg-leafGreen text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-2 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-leafLight block mb-1">Laborator</span>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-leafLight block">Laborator</span>
+              <span class="text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-full" data-cms="price_analize">150 RON</span>
+            </div>
             <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card1_title">Interpretare analize</h3>
             <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card1_desc">Trimite hemoleucograma, CRP, urocultura și sumarul pentru verificare.</p>
           </div>
@@ -288,7 +292,10 @@
 
         <div onclick="window.selectConsultService('externare')" class="note-card cursor-pointer bg-coralPop text-white rounded-2xl torn-edge px-6 pt-7 pb-6 w-72 rotate-1 sm:mt-4 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-parchment/80 block mb-1">Externare</span>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-parchment/80 block">Externare</span>
+              <span class="text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-full" data-cms="price_externare">200 RON</span>
+            </div>
             <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card2_title">A doua opinie</h3>
             <p class="text-xs text-white/85 mt-2 leading-relaxed" data-cms="card2_desc">Reevaluare diagnostic de spital și schema de tratament la domiciliu.</p>
           </div>
@@ -297,7 +304,10 @@
 
         <div onclick="window.selectConsultService('consiliere')" class="note-card cursor-pointer bg-warmSun text-ink rounded-2xl torn-edge px-6 pt-7 pb-6 w-64 -rotate-1 shadow-sm flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-ink/60 block mb-1">Consiliere</span>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-ink/60 block">Consiliere</span>
+              <span class="text-xs font-bold bg-ink/10 text-ink px-2 py-0.5 rounded-full" data-cms="price_consiliere">120 RON</span>
+            </div>
             <h3 class="text-lg font-display font-semibold leading-snug" data-cms="card3_title">Bebeluși & Părinți</h3>
             <p class="text-xs text-ink/80 mt-2 leading-relaxed" data-cms="card3_desc">Sfaturi despre diversificare, greutate, febră și semnale de alarmă.</p>
           </div>
@@ -386,66 +396,6 @@
       </div>
     </section>
 
-    <section id="tab-services" class="hidden py-10 space-y-12">
-      <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Servicii Medicale</span>
-          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Cum te pot ajuta</h2>
-          <p class="text-sm text-ink/60 mt-1">Consultanță medicală de la distanță pentru probleme frecvente în pediatrie.</p>
-        </div>
-        <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
-          ← Înapoi acasă
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white/80 border border-ink/10 rounded-3xl p-8 flex flex-col justify-between shadow-sm">
-          <div class="space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-leafGreen text-white flex items-center justify-center text-xl">
-              🧪
-            </div>
-            <h3 class="text-xl font-display font-semibold text-ink">Interpretare Analize de Sânge</h3>
-            <p class="text-xs text-ink/70 leading-relaxed">
-              Hemoleucogramă completă, anemie feriprivă, markeri de inflamație (VSH, PCR), profil biochimic și sumar de urină. Primești explicația detaliată a fiecărei deviații.
-            </p>
-          </div>
-          <button onclick="window.selectConsultService('analize')" class="mt-8 bg-leafGreen hover:bg-leafGreenDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
-            Trimite analizele →
-          </button>
-        </div>
-
-        <div class="bg-white/80 border border-ink/10 rounded-3xl p-8 flex flex-col justify-between shadow-sm">
-          <div class="space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-coralPop text-white flex items-center justify-center text-xl">
-              🍼
-            </div>
-            <h3 class="text-xl font-display font-semibold text-ink">Consiliere Diversificare & Tranzit</h3>
-            <p class="text-xs text-ink/70 leading-relaxed">
-              Scheme de începere a hranei solide, interpretarea scaunelor modificate, gestionarea episoadelor de constipație sau a curbelor lente de creștere în greutate.
-            </p>
-          </div>
-          <button onclick="window.selectConsultService('consiliere')" class="mt-8 bg-coralPop hover:bg-coralDark text-white py-3 rounded-full text-xs font-bold transition-all shadow-sm">
-            Adresează o întrebare →
-          </button>
-        </div>
-
-        <div class="bg-white/80 border border-ink/10 rounded-3xl p-8 flex flex-col justify-between shadow-sm">
-          <div class="space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-warmSun text-ink flex items-center justify-center text-xl">
-              📋
-            </div>
-            <h3 class="text-xl font-display font-semibold text-ink">A Doua Opinie Bilet de Spital</h3>
-            <p class="text-xs text-ink/70 leading-relaxed">
-              Lămurirea diagnosticului stabilit la camera de gardă, verificarea tratamentului medicamentos prescris la externare și plan de monitorizare la domiciliu.
-            </p>
-          </div>
-          <button onclick="window.selectConsultService('externare')" class="mt-8 bg-warmSun text-ink hover:bg-amber-400 py-3 rounded-full text-xs font-bold transition-all shadow-sm">
-            Încarcă dosarul →
-          </button>
-        </div>
-      </div>
-    </section>
-
     <section id="tab-articles" class="hidden py-10 space-y-8">
       <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
         <div>
@@ -506,8 +456,8 @@
       <div class="border-b border-ink/10 pb-6 flex items-center justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Cabinet Online</span>
-          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Alege tipul de solicitare</h2>
-          <p class="text-sm text-ink/60 mt-1">Selectează serviciul dorit pentru a deschide formularul dedicat.</p>
+          <h2 class="text-3xl sm:text-4xl font-display font-medium text-ink mt-1">Alege serviciul pediatric</h2>
+          <p class="text-sm text-ink/60 mt-1">Selectează serviciul potrivit, completează datele și inițiază plata prin Piper.</p>
         </div>
         <button onclick="switchTab('home')" class="text-xs font-bold text-ink/50 hover:text-ink">
           ← Înapoi acasă
@@ -516,10 +466,15 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
-        <div onclick="window.selectConsultService('analize')" id="service-card-analize" class="service-selector-card cursor-pointer bg-white/90 border-2 border-leafGreen rounded-2xl p-5 shadow-sm hover:border-leafGreen transition-all flex flex-col justify-between">
+        <div onclick="window.selectConsultService('analize')" id="service-card-analize" class="service-selector-card cursor-pointer bg-white/95 border-2 border-leafGreen rounded-2xl p-5 shadow-sm hover:border-leafGreen transition-all flex flex-col justify-between">
           <div class="space-y-2">
-            <div class="w-10 h-10 rounded-xl bg-leafGreen text-white flex items-center justify-center text-lg">
-              🧪
+            <div class="flex items-center justify-between">
+              <div class="w-10 h-10 rounded-xl bg-leafGreen text-white flex items-center justify-center text-lg">
+                🧪
+              </div>
+              <span class="text-xs font-bold bg-leafLight text-leafGreenDark border border-leafGreen/20 px-3 py-1 rounded-full" data-cms="price_analize">
+                150 RON
+              </span>
             </div>
             <h3 class="font-display font-semibold text-lg text-ink">Interpretare Analize Medicale</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
@@ -531,8 +486,13 @@
 
         <div onclick="window.selectConsultService('externare')" id="service-card-externare" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-coralPop transition-all flex flex-col justify-between">
           <div class="space-y-2">
-            <div class="w-10 h-10 rounded-xl bg-coralPop text-white flex items-center justify-center text-lg">
-              📋
+            <div class="flex items-center justify-between">
+              <div class="w-10 h-10 rounded-xl bg-coralPop text-white flex items-center justify-center text-lg">
+                📋
+              </div>
+              <span class="text-xs font-bold bg-coralPop/10 text-coralDark border border-coralPop/20 px-3 py-1 rounded-full" data-cms="price_externare">
+                200 RON
+              </span>
             </div>
             <h3 class="font-display font-semibold text-lg text-ink">A Doua Opinie Bilet Externare</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
@@ -544,8 +504,13 @@
 
         <div onclick="window.selectConsultService('consiliere')" id="service-card-consiliere" class="service-selector-card cursor-pointer bg-white/60 border-2 border-ink/10 rounded-2xl p-5 shadow-sm hover:border-warmSun transition-all flex flex-col justify-between">
           <div class="space-y-2">
-            <div class="w-10 h-10 rounded-xl bg-warmSun text-ink flex items-center justify-center text-lg">
-              🍼
+            <div class="flex items-center justify-between">
+              <div class="w-10 h-10 rounded-xl bg-warmSun text-ink flex items-center justify-center text-lg">
+                🍼
+              </div>
+              <span class="text-xs font-bold bg-warmSun/20 text-amber-900 border border-warmSun/30 px-3 py-1 rounded-full" data-cms="price_consiliere">
+                120 RON
+              </span>
             </div>
             <h3 class="font-display font-semibold text-lg text-ink">Consiliere Bebeluşi & Tranzit</h3>
             <p class="text-xs text-ink/70 leading-relaxed">
@@ -578,14 +543,20 @@
       </div>
 
       <div class="bg-white/85 backdrop-blur-sm rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-sm relative">
-        <div class="mb-6 pb-6 border-b border-ink/10">
-          <span id="form-service-badge" class="inline-block text-xs font-bold uppercase tracking-wider text-leafGreen bg-leafLight/70 px-3 py-1 rounded-full mb-2">
-            Serviciu selectat: Interpretare Analize Medicale
-          </span>
-          <h3 id="form-service-title" class="text-2xl font-display font-medium text-ink">Completează datele copilului</h3>
-          <p id="form-service-desc" class="text-xs font-semibold text-ink/60 mt-1">
-            Datele tale sunt trimise securizat către medicul pediatru. Vei primi răspunsul pe adresa ta de e-mail.
-          </p>
+        <div class="mb-6 pb-6 border-b border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span id="form-service-badge" class="inline-block text-xs font-bold uppercase tracking-wider text-leafGreen bg-leafLight/70 px-3 py-1 rounded-full mb-2">
+              Serviciu selectat: Interpretare Analize Medicale
+            </span>
+            <h3 id="form-service-title" class="text-2xl font-display font-medium text-ink">Completează datele copilului</h3>
+            <p id="form-service-desc" class="text-xs font-semibold text-ink/60 mt-1">
+              Datele tale sunt trimise securizat către medicul pediatru.
+            </p>
+          </div>
+          <div class="bg-parchment border border-ink/10 px-4 py-2.5 rounded-2xl text-right">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-ink/60 block">Tarif Serviciu</span>
+            <span id="form-display-price" class="text-xl font-display font-bold text-leafGreen">150 RON</span>
+          </div>
         </div>
 
         <form id="consult-form" class="space-y-5">
@@ -620,8 +591,9 @@
           </div>
 
           <div class="pt-2">
-            <button type="submit" id="submit-btn" class="w-full bg-coralPop hover:bg-coralDark text-white py-4 rounded-full font-bold text-sm shadow-sm transition-all">
-              Trimite dosarul către medicul pediatru
+            <button type="submit" id="submit-btn" class="w-full bg-coralPop hover:bg-coralDark text-white py-4 rounded-full font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+              <span>Continuă spre Plata Piper</span>
+              <span id="btn-price-tag" class="bg-white/20 px-2.5 py-0.5 rounded-full text-xs font-bold">150 RON</span>
             </button>
           </div>
 
@@ -630,11 +602,83 @@
       </div>
     </section>
 
+    <section id="tab-piper-checkout" class="hidden max-w-xl mx-auto py-12 space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="switchTab('consult')" class="text-xs font-bold text-leafGreen link-underline flex items-center gap-1">
+          ← Înapoi la formular
+        </button>
+        <span class="text-xs font-bold text-ink/50 bg-white/70 px-3 py-1 rounded-full border border-ink/10">
+          Piper Checkout Securizat
+        </span>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-ink/10 p-8 sm:p-10 shadow-lg space-y-6 relative overflow-hidden">
+        
+        <div class="border-b border-ink/10 pb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-leafLight text-leafGreen flex items-center justify-center text-xl">
+              🫧
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-semibold text-ink">Piper Payment Gateway</h3>
+              <p class="text-xs font-semibold text-ink/60">Finalizează plata securizată prin Stripe</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-parchment rounded-2xl p-4 border border-ink/10 space-y-2">
+          <div class="flex justify-between text-xs text-ink/70">
+            <span>Serviciu pediatric:</span>
+            <span id="piper-summary-service" class="font-bold text-ink">Interpretare Analize</span>
+          </div>
+          <div class="flex justify-between text-xs text-ink/70">
+            <span>E-mail pacient:</span>
+            <span id="piper-summary-email" class="font-bold text-ink">exemplu@email.ro</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-ink border-t border-ink/10 pt-2">
+            <span>Total de plată:</span>
+            <span id="piper-summary-amount" class="text-leafGreen font-display text-base">150 RON</span>
+          </div>
+        </div>
+
+        <form id="piper-stripe-form" class="space-y-5">
+          <div>
+            <label class="block text-xs font-bold text-ink/70 mb-2">Detalii Card Bancar (Procesat prin Stripe)</label>
+            <div id="stripe-card-element" class="p-4 bg-white border border-ink/15 rounded-xl text-sm shadow-inner"></div>
+            <div id="stripe-card-errors" class="text-xs font-bold text-berryRose mt-2 hidden"></div>
+          </div>
+
+          <button type="submit" id="piper-pay-btn" class="w-full bg-leafGreen hover:bg-leafGreenDark text-white py-3.5 rounded-full font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+            <span>Plătește în siguranță</span>
+            <span id="piper-btn-amount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs">150 RON</span>
+          </button>
+
+          <p class="text-[11px] text-center text-ink/50 leading-relaxed">
+            Plățile sunt procesate securizat conform standardului PCI-DSS. Nu salvăm datele cardului tău.
+          </p>
+        </form>
+
+        <div id="piper-success-screen" class="hidden text-center py-6 space-y-4">
+          <div class="w-16 h-16 rounded-full bg-leafLight text-leafGreen flex items-center justify-center text-3xl mx-auto shadow-sm">
+            ✓
+          </div>
+          <h3 class="text-2xl font-display font-semibold text-ink">Plată confirmată cu succes!</h3>
+          <p class="text-xs text-ink/70 max-w-sm mx-auto leading-relaxed">
+            Dosarul a fost recepționat de Dr. Bubbles. O notificare a fost expediată către medic, iar evaluarea va fi trimisă pe adresa ta de e-mail.
+          </p>
+          <button onclick="switchTab('home')" class="bg-leafGreen hover:bg-leafGreenDark text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all">
+            Înapoi pe prima pagină
+          </button>
+        </div>
+
+      </div>
+    </section>
+
     <section id="tab-doctor" class="hidden py-12 space-y-10">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-ink/10">
         <div>
           <h2 class="text-2xl font-display font-medium text-ink">Panou administrare medic</h2>
-          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților și articolele publicate.</p>
+          <p class="text-xs font-medium text-ink/60">Gestionează dosarele pacienților, articolele, tarifele și e-mailul de notificare.</p>
         </div>
         <div class="flex items-center gap-3">
           <button id="toggle-cms-mode-btn" class="px-4 py-2 rounded-full text-xs font-bold bg-warmSun/30 text-ink border border-warmSun/60 hover:bg-warmSun/50 transition-colors">
@@ -644,6 +688,58 @@
             Deconectare
           </button>
         </div>
+      </div>
+
+      <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-display font-semibold text-ink">Configurare Notificări & Tarife Servicii</h3>
+            <p class="text-xs text-ink/60 mt-0.5">Modifică adresa de e-mail pentru recepționarea dosarelor și tarifele Piper.</p>
+          </div>
+          <span class="text-xs font-bold bg-leafLight text-leafGreen px-3 py-1 rounded-full border border-leafGreen/20">
+            Setări Medic
+          </span>
+        </div>
+
+        <form id="doctor-settings-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-ink/70 mb-1">E-mail Medic pentru primirea dosarelor plătite</label>
+            <input type="email" id="doctor-notification-email" required value="ahmadarnaoute1896@gmail.com" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Analize (RON)</label>
+              <input type="number" id="doctor-price-analize" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Bilet Externare (RON)</label>
+              <input type="number" id="doctor-price-externare" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Consiliere (RON)</label>
+              <input type="number" id="doctor-price-consiliere" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Stripe Publishable Key (pk_test_... sau pk_live_...)</label>
+              <input type="text" id="doctor-stripe-key" placeholder="pk_test_..." class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink/70 mb-1">Firebase Cloud Functions URL</label>
+              <input type="url" id="doctor-functions-url" placeholder="https://us-central1-drbubbles-49e6f.cloudfunctions.net" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            </div>
+          </div>
+
+          <div class="pt-3 flex items-center justify-between">
+            <button type="submit" class="bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-2.5 rounded-full text-xs transition-colors shadow-sm">
+              Salvează Setările & Tarifele
+            </button>
+            <span id="doctor-settings-status" class="text-xs font-bold text-leafGreen hidden">Setările au fost salvate cu succes! ✓</span>
+          </div>
+        </form>
       </div>
 
       <div class="bg-white/80 border border-ink/10 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
@@ -778,7 +874,7 @@
     window.previousTab = "home";
 
     window.switchTab = function (tab) {
-      const tabs = ["home", "about", "services", "articles", "article-view", "consult", "doctor"];
+      const tabs = ["home", "about", "articles", "article-view", "consult", "piper-checkout", "doctor"];
       tabs.forEach(function (t) {
         const el = document.getElementById("tab-" + t);
         if (el) el.classList.add("hidden");
@@ -830,6 +926,10 @@
       const desc = document.getElementById("form-service-desc");
       const fileInput = document.getElementById("file");
       const fileLabel = document.getElementById("file-label");
+      const formDisplayPrice = document.getElementById("form-display-price");
+      const btnPriceTag = document.getElementById("btn-price-tag");
+
+      let currentPrice = "150 RON";
 
       if (type === "analize") {
         badge.innerText = "Serviciu selectat: Interpretare Analize Medicale";
@@ -837,19 +937,28 @@
         desc.innerText = "Încarcă rezultatele de laborator (hemoleucograme, uroculturi, PCR, biochimie).";
         fileInput.required = true;
         fileLabel.innerText = "Atașează buletinul de analize (PDF, imagini) *";
+        const priceEl = document.querySelector('[data-cms="price_analize"]');
+        if (priceEl) currentPrice = priceEl.innerText.trim();
       } else if (type === "externare") {
         badge.innerText = "Serviciu selectat: A Doua Opinie Bilet Externare";
         title.innerText = "Trimite biletul de ieșire din spital";
         desc.innerText = "Încarcă biletul de externare sau scrisoarea medicală pentru revizuirea diagnosticului și a tratamentului.";
         fileInput.required = true;
         fileLabel.innerText = "Atașează biletul de externare (PDF, imagini) *";
+        const priceEl = document.querySelector('[data-cms="price_externare"]');
+        if (priceEl) currentPrice = priceEl.innerText.trim();
       } else if (type === "consiliere") {
         badge.innerText = "Serviciu selectat: Consiliere Bebeluşi & Dezvoltare";
         title.innerText = "Adresează întrebarea medicală";
         desc.innerText = "Întrebări legate de diversificare, tranzit intestinal, apetit sau parametri de creștere.";
         fileInput.required = false;
         fileLabel.innerText = "Atașează fișiere dacă este cazul (opțional)";
+        const priceEl = document.querySelector('[data-cms="price_consiliere"]');
+        if (priceEl) currentPrice = priceEl.innerText.trim();
       }
+
+      if (formDisplayPrice) formDisplayPrice.innerText = currentPrice;
+      if (btnPriceTag) btnPriceTag.innerText = currentPrice;
     };
   </script>
 </body>

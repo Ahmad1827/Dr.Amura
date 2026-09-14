@@ -37,9 +37,29 @@ const saveCmsBtn = document.getElementById("save-cms-btn");
 const stopCmsBtn = document.getElementById("stop-cms-btn");
 const toggleCmsBtn = document.getElementById("toggle-cms-mode-btn");
 
+const doctorSettingsForm = document.getElementById("doctor-settings-form");
+const doctorSettingsStatus = document.getElementById("doctor-settings-status");
+const piperStripeForm = document.getElementById("piper-stripe-form");
+const piperPayBtn = document.getElementById("piper-pay-btn");
+const piperSuccessScreen = document.getElementById("piper-success-screen");
+const stripeErrorsEl = document.getElementById("stripe-card-errors");
+
 let isCmsActive = false;
 let currentArticles = [];
 let currentViewingArticleId = null;
+
+let currentActiveCase = null;
+let stripeInstance = null;
+let cardElement = null;
+
+let doctorConfig = {
+  notificationEmail: "ahmadarnaoute1896@gmail.com",
+  price_analize: 150,
+  price_externare: 200,
+  price_consiliere: 120,
+  stripePublishableKey: "",
+  functionsUrl: ""
+};
 
 const DEFAULT_ARTICLES = [
   {
@@ -123,7 +143,7 @@ window.deleteArticlePrompt = async function (id) {
   try {
     await deleteDoc(doc(db, "articles", id));
     alert("Articolul a fost șters!");
-    if (window.currentViewingArticleId === id) {
+    if (currentViewingArticleId === id) {
       window.switchTab("articles");
     }
     await loadArticles();
@@ -145,6 +165,120 @@ if (readerDeleteBtn) {
   readerDeleteBtn.addEventListener("click", () => {
     if (currentViewingArticleId) window.deleteArticlePrompt(currentViewingArticleId);
   });
+}
+
+async function loadDoctorSettings() {
+  try {
+    const docRef = doc(db, "settings", "doctor_profile");
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      doctorConfig = { ...doctorConfig, ...snap.data() };
+    }
+  } catch (err) {}
+
+  syncDoctorSettingsToUI();
+}
+
+function syncDoctorSettingsToUI() {
+  const emailInput = document.getElementById("doctor-notification-email");
+  const analizeInput = document.getElementById("doctor-price-analize");
+  const externareInput = document.getElementById("doctor-price-externare");
+  const consiliereInput = document.getElementById("doctor-price-consiliere");
+  const stripeKeyInput = document.getElementById("doctor-stripe-key");
+  const functionsUrlInput = document.getElementById("doctor-functions-url");
+
+  if (emailInput) emailInput.value = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
+  if (analizeInput) analizeInput.value = doctorConfig.price_analize || 150;
+  if (externareInput) externareInput.value = doctorConfig.price_externare || 200;
+  if (consiliereInput) consiliereInput.value = doctorConfig.price_consiliere || 120;
+  if (stripeKeyInput) stripeKeyInput.value = doctorConfig.stripePublishableKey || "";
+  if (functionsUrlInput) functionsUrlInput.value = doctorConfig.functionsUrl || "";
+
+  const analizeEl = document.querySelector('[data-cms="price_analize"]');
+  const externareEl = document.querySelector('[data-cms="price_externare"]');
+  const consiliereEl = document.querySelector('[data-cms="price_consiliere"]');
+
+  if (analizeEl) analizeEl.innerText = `${doctorConfig.price_analize} RON`;
+  if (externareEl) externareEl.innerText = `${doctorConfig.price_externare} RON`;
+  if (consiliereEl) consiliereEl.innerText = `${doctorConfig.price_consiliere} RON`;
+
+  const selectedServiceInput = document.getElementById("selected-service-input");
+  if (selectedServiceInput) {
+    window.selectConsultService(selectedServiceInput.value || "analize");
+  }
+
+  initStripeElements();
+}
+
+if (doctorSettingsForm) {
+  doctorSettingsForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const notificationEmail = document.getElementById("doctor-notification-email").value.trim();
+    const price_analize = parseInt(document.getElementById("doctor-price-analize").value, 10) || 150;
+    const price_externare = parseInt(document.getElementById("doctor-price-externare").value, 10) || 200;
+    const price_consiliere = parseInt(document.getElementById("doctor-price-consiliere").value, 10) || 120;
+    const stripePublishableKey = document.getElementById("doctor-stripe-key").value.trim();
+    const functionsUrl = document.getElementById("doctor-functions-url").value.trim();
+
+    doctorConfig = {
+      notificationEmail,
+      price_analize,
+      price_externare,
+      price_consiliere,
+      stripePublishableKey,
+      functionsUrl
+    };
+
+    try {
+      await setDoc(doc(db, "settings", "doctor_profile"), doctorConfig, { merge: true });
+      await setDoc(doc(db, "settings", "site_content"), {
+        price_analize: `${price_analize} RON`,
+        price_externare: `${price_externare} RON`,
+        price_consiliere: `${price_consiliere} RON`
+      }, { merge: true });
+
+      syncDoctorSettingsToUI();
+      if (doctorSettingsStatus) {
+        doctorSettingsStatus.classList.remove("hidden");
+        setTimeout(() => doctorSettingsStatus.classList.add("hidden"), 3000);
+      }
+    } catch (err) {
+      alert("Eroare la salvare: " + err.message);
+    }
+  });
+}
+
+function initStripeElements() {
+  const cardContainer = document.getElementById("stripe-card-element");
+  if (!cardContainer || !window.Stripe) return;
+
+  const pubKey = doctorConfig.stripePublishableKey || "pk_test_TYooMQauvdEDq54NiTphI7jx";
+  try {
+    stripeInstance = window.Stripe(pubKey);
+    const elements = stripeInstance.elements();
+    cardElement = elements.create("card", {
+      style: {
+        base: {
+          fontFamily: "'Karla', sans-serif",
+          fontSize: "15px",
+          color: "#1D2D27",
+          "::placeholder": { color: "#8E9E98" }
+        }
+      }
+    });
+    cardContainer.innerHTML = "";
+    cardElement.mount("#stripe-card-element");
+
+    cardElement.on("change", (event) => {
+      if (event.error) {
+        stripeErrorsEl.textContent = event.error.message;
+        stripeErrorsEl.classList.remove("hidden");
+      } else {
+        stripeErrorsEl.textContent = "";
+        stripeErrorsEl.classList.add("hidden");
+      }
+    });
+  } catch (err) {}
 }
 
 function renderArticles() {
@@ -437,9 +571,9 @@ if (consultForm) {
     e.preventDefault();
     const submitBtn = document.getElementById("submit-btn");
     submitBtn.disabled = true;
-    submitBtn.innerText = "Se încarcă dosarul...";
+    submitBtn.innerText = "Se încarcă fișierele și se deschide Piper...";
     statusMsg.classList.remove("hidden");
-    statusMsg.innerText = "Se transmit datele către Dr. Bubbles...";
+    statusMsg.innerText = "Se pregătește sesiunea de plată Piper...";
 
     try {
       const serviceType = document.getElementById("selected-service-input").value || "analize";
@@ -448,7 +582,9 @@ if (consultForm) {
       const weight = document.getElementById("weight").value;
       const symptoms = document.getElementById("symptoms").value;
       const fileInput = document.getElementById("file");
-      const file = fileInput.files[0];
+      const file = fileInput.files ? fileInput.files[0] : null;
+
+      const priceAmount = doctorConfig[`price_${serviceType}`] || 150;
 
       let fileUrl = null;
       let fileName = null;
@@ -460,7 +596,7 @@ if (consultForm) {
         fileName = file.name;
       }
 
-      await addDoc(collection(db, "consultations"), {
+      const caseRef = await addDoc(collection(db, "consultations"), {
         serviceType,
         contact,
         childAge: age,
@@ -468,19 +604,137 @@ if (consultForm) {
         symptoms,
         fileUrl,
         fileName,
-        status: "in_asteptare",
+        price: priceAmount,
+        currency: "RON",
+        status: "in_asteptare_plata",
+        isPaid: false,
         createdAt: serverTimestamp()
       });
 
-      statusMsg.innerText = "Dosarul a ajuns cu succes la Dr. Bubbles! Verifică e-mailul în curând.";
-      statusMsg.className = "text-center text-xs font-semibold mt-3 text-leafGreen";
+      currentActiveCase = {
+        id: caseRef.id,
+        serviceType,
+        contact,
+        childAge: age,
+        childWeight: weight,
+        symptoms,
+        fileUrl,
+        fileName,
+        price: priceAmount
+      };
+
+      document.getElementById("piper-summary-service").innerText =
+        serviceType === "externare"
+          ? "A Doua Opinie Bilet Externare"
+          : serviceType === "consiliere"
+            ? "Consiliere Bebeluşi & Tranzit"
+            : "Interpretare Analize Medicale";
+
+      document.getElementById("piper-summary-email").innerText = contact;
+      document.getElementById("piper-summary-amount").innerText = `${priceAmount} RON`;
+      document.getElementById("piper-btn-amount").innerText = `${priceAmount} RON`;
+
+      piperStripeForm.classList.remove("hidden");
+      piperSuccessScreen.classList.add("hidden");
+
+      window.switchTab("piper-checkout");
+      statusMsg.classList.add("hidden");
       consultForm.reset();
     } catch (err) {
-      statusMsg.innerText = "Eroare la trimitere: " + err.message;
+      statusMsg.innerText = "Eroare la inițiere: " + err.message;
       statusMsg.className = "text-center text-xs font-semibold mt-3 text-berryRose";
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerText = "Trimite dosarul către medicul pediatru";
+      const currentService = document.getElementById("selected-service-input").value || "analize";
+      const currentPrice = doctorConfig[`price_${currentService}`] || 150;
+      submitBtn.innerHTML = `<span>Continuă spre Plata Piper</span><span class="bg-white/20 px-2.5 py-0.5 rounded-full text-xs font-bold">${currentPrice} RON</span>`;
+    }
+  });
+}
+
+if (piperStripeForm) {
+  piperStripeForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentActiveCase) {
+      alert("Sesiune expirată. Completează din nou formularul.");
+      window.switchTab("consult");
+      return;
+    }
+
+    piperPayBtn.disabled = true;
+    piperPayBtn.innerText = "Se procesează plata securizată...";
+
+    try {
+      let paymentConfirmed = false;
+
+      if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
+        const intentRes = await fetch(`${doctorConfig.functionsUrl}/createPaymentIntent`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            caseId: currentActiveCase.id,
+            amount: currentActiveCase.price,
+            serviceType: currentActiveCase.serviceType,
+            parentEmail: currentActiveCase.contact,
+            childAge: currentActiveCase.childAge
+          })
+        });
+
+        if (intentRes.ok) {
+          const intentData = await intentRes.json();
+          if (stripeInstance && cardElement && intentData.clientSecret) {
+            const result = await stripeInstance.confirmCardPayment(intentData.clientSecret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: { email: currentActiveCase.contact }
+              }
+            });
+
+            if (result.error) {
+              throw new Error(result.error.message);
+            } else if (result.paymentIntent.status === "succeeded") {
+              paymentConfirmed = true;
+            }
+          }
+        }
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1400));
+        paymentConfirmed = true;
+      }
+
+      if (paymentConfirmed) {
+        await updateDoc(doc(db, "consultations", currentActiveCase.id), {
+          status: "platit",
+          isPaid: true,
+          paidAt: serverTimestamp()
+        });
+
+        const targetDoctorEmail = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
+
+        if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
+          try {
+            await fetch(`${doctorConfig.functionsUrl}/sendDoctorEmailNotification`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                caseId: currentActiveCase.id,
+                doctorEmail: targetDoctorEmail,
+                caseDetails: currentActiveCase
+              })
+            });
+          } catch (mailErr) {}
+        }
+
+        piperStripeForm.classList.add("hidden");
+        piperSuccessScreen.classList.remove("hidden");
+        loadCases();
+      }
+    } catch (err) {
+      stripeErrorsEl.textContent = err.message;
+      stripeErrorsEl.classList.remove("hidden");
+    } finally {
+      piperPayBtn.disabled = false;
+      piperPayBtn.innerHTML = `<span>Plătește în siguranță</span><span id="piper-btn-amount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs">${currentActiveCase ? currentActiveCase.price : 150} RON</span>`;
     }
   });
 }
@@ -501,7 +755,9 @@ async function loadCases() {
     casesContainer.innerHTML = "";
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
-      const isDone = data.status === "finalizat";
+      const isReviewed = data.status === "finalizat";
+      const isPaid = data.isPaid || data.status === "platit";
+
       const serviceName = data.serviceType === "externare" 
         ? "Bilet Externare" 
         : data.serviceType === "consiliere" 
@@ -513,12 +769,21 @@ async function loadCases() {
       card.innerHTML = `
         <div class="flex justify-between items-start gap-4">
           <div>
-            <div class="flex items-center gap-2">
-              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isDone ? "bg-leafLight text-leafGreenDark" : "bg-warmSun/25 text-amber-900"}">
-                ${isDone ? "Rezolvat" : "În așteptare"}
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                isReviewed
+                  ? "bg-slate-200 text-slate-800"
+                  : isPaid
+                    ? "bg-leafLight text-leafGreenDark border border-leafGreen/30"
+                    : "bg-warmSun/20 text-amber-900 border border-warmSun/40"
+              }">
+                ${isReviewed ? "Finalizat" : isPaid ? "Plătit prin Piper ✓" : "Așteaptă Plată"}
               </span>
               <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
                 ${serviceName}
+              </span>
+              <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-leafGreen/10 text-leafGreen">
+                ${data.price ? data.price + " RON" : "150 RON"}
               </span>
             </div>
             <h4 class="text-lg font-display font-semibold mt-2 text-ink">${data.contact}</h4>
@@ -535,10 +800,11 @@ async function loadCases() {
         <p class="text-xs font-medium bg-warmSun/10 border border-warmSun/30 rounded-xl p-3 leading-relaxed text-ink">
           ${data.symptoms}
         </p>
-        <div class="pt-2 border-t border-ink/10 flex gap-2">
+        <div class="pt-2 border-t border-ink/10 flex items-center justify-between gap-2">
           <button data-id="${docSnap.id}" data-status="finalizat" class="status-btn bg-leafGreen hover:bg-leafGreenDark text-white px-4 py-2 rounded-full text-xs font-bold transition-colors">
             Marchează ca rezolvat
           </button>
+          <span class="text-[10px] font-bold text-ink/40">Notificat: ${doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com"}</span>
         </div>
       `;
       casesContainer.appendChild(card);
@@ -558,4 +824,5 @@ async function loadCases() {
 }
 
 loadCmsContent();
+loadDoctorSettings();
 loadArticles();
