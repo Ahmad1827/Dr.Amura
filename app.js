@@ -43,6 +43,7 @@ const piperStripeForm = document.getElementById("piper-stripe-form");
 const piperPayBtn = document.getElementById("piper-pay-btn");
 const piperSuccessScreen = document.getElementById("piper-success-screen");
 const stripeErrorsEl = document.getElementById("stripe-card-errors");
+const piperSimulatePayBtn = document.getElementById("piper-simulate-pay-btn");
 
 let isCmsActive = false;
 let currentArticles = [];
@@ -84,6 +85,248 @@ const DEFAULT_ARTICLES = [
     content: "Sistemul digestiv al sugarului are nevoie de timp pentru a învăța să digere fibrele vegetale.\n\nEste normal să găsești bucățele nedigerate de legume sau modificări spectaculoase de culoare în scutec. Semnalele reale de alarmă care impun consult sunt prezența firișoarelor de sânge, diareea apoasă cu mai mult de 5-6 scaune pe zi sau refuzul complet al hidratării."
   }
 ];
+
+window.syncPricesAcrossDOM = function () {
+  const analizeStr = `${doctorConfig.price_analize} RON`;
+  const externareStr = `${doctorConfig.price_externare} RON`;
+  const consiliereStr = `${doctorConfig.price_consiliere} RON`;
+
+  document.querySelectorAll('[data-cms="price_analize"]').forEach((el) => {
+    el.innerText = analizeStr;
+  });
+  document.querySelectorAll('[data-cms="price_externare"]').forEach((el) => {
+    el.innerText = externareStr;
+  });
+  document.querySelectorAll('[data-cms="price_consiliere"]').forEach((el) => {
+    el.innerText = consiliereStr;
+  });
+
+  const selectedInput = document.getElementById("selected-service-input");
+  const selectedType = selectedInput ? selectedInput.value : "analize";
+  const currentPrice = `${doctorConfig[`price_${selectedType}`] || 150} RON`;
+
+  const formDisplayPrice = document.getElementById("form-display-price");
+  const btnPriceTag = document.getElementById("btn-price-tag");
+  const piperSummaryAmount = document.getElementById("piper-summary-amount");
+  const piperBtnAmount = document.getElementById("piper-btn-amount");
+
+  if (formDisplayPrice) formDisplayPrice.innerText = currentPrice;
+  if (btnPriceTag) btnPriceTag.innerText = currentPrice;
+  if (piperSummaryAmount) piperSummaryAmount.innerText = currentPrice;
+  if (piperBtnAmount) piperBtnAmount.innerText = currentPrice;
+};
+
+async function loadDoctorSettings() {
+  try {
+    const docRef = doc(db, "settings", "doctor_profile");
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      doctorConfig = { ...doctorConfig, ...snap.data() };
+    }
+  } catch (err) {}
+
+  syncDoctorSettingsToUI();
+}
+
+function syncDoctorSettingsToUI() {
+  const emailInput = document.getElementById("doctor-notification-email");
+  const analizeInput = document.getElementById("doctor-price-analize");
+  const externareInput = document.getElementById("doctor-price-externare");
+  const consiliereInput = document.getElementById("doctor-price-consiliere");
+  const stripeKeyInput = document.getElementById("doctor-stripe-key");
+  const functionsUrlInput = document.getElementById("doctor-functions-url");
+
+  if (emailInput) emailInput.value = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
+  if (analizeInput) analizeInput.value = doctorConfig.price_analize || 150;
+  if (externareInput) externareInput.value = doctorConfig.price_externare || 200;
+  if (consiliereInput) consiliereInput.value = doctorConfig.price_consiliere || 120;
+  if (stripeKeyInput) stripeKeyInput.value = doctorConfig.stripePublishableKey || "";
+  if (functionsUrlInput) functionsUrlInput.value = doctorConfig.functionsUrl || "";
+
+  window.syncPricesAcrossDOM();
+  initStripeElements();
+}
+
+if (doctorSettingsForm) {
+  doctorSettingsForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const notificationEmail = document.getElementById("doctor-notification-email").value.trim();
+    const price_analize = parseInt(document.getElementById("doctor-price-analize").value, 10) || 150;
+    const price_externare = parseInt(document.getElementById("doctor-price-externare").value, 10) || 200;
+    const price_consiliere = parseInt(document.getElementById("doctor-price-consiliere").value, 10) || 120;
+    const stripePublishableKey = document.getElementById("doctor-stripe-key").value.trim();
+    const functionsUrl = document.getElementById("doctor-functions-url").value.trim();
+
+    doctorConfig = {
+      notificationEmail,
+      price_analize,
+      price_externare,
+      price_consiliere,
+      stripePublishableKey,
+      functionsUrl
+    };
+
+    try {
+      await setDoc(doc(db, "settings", "doctor_profile"), doctorConfig, { merge: true });
+      await setDoc(doc(db, "settings", "site_content"), {
+        price_analize: `${price_analize} RON`,
+        price_externare: `${price_externare} RON`,
+        price_consiliere: `${price_consiliere} RON`
+      }, { merge: true });
+
+      syncDoctorSettingsToUI();
+      if (doctorSettingsStatus) {
+        doctorSettingsStatus.classList.remove("hidden");
+        setTimeout(() => doctorSettingsStatus.classList.add("hidden"), 3000);
+      }
+    } catch (err) {
+      alert("Eroare la salvare: " + err.message);
+    }
+  });
+}
+
+function initStripeElements() {
+  const cardContainer = document.getElementById("stripe-card-element");
+  if (!cardContainer || !window.Stripe) return;
+
+  const pubKey = doctorConfig.stripePublishableKey || "pk_test_TYooMQauvdEDq54NiTphI7jx";
+  try {
+    stripeInstance = window.Stripe(pubKey);
+    const elements = stripeInstance.elements();
+    cardElement = elements.create("card", {
+      style: {
+        base: {
+          fontFamily: "'Karla', sans-serif",
+          fontSize: "15px",
+          color: "#1D2D27",
+          "::placeholder": { color: "#8E9E98" }
+        }
+      }
+    });
+    cardContainer.innerHTML = "";
+    cardElement.mount("#stripe-card-element");
+
+    cardElement.on("change", (event) => {
+      if (event.error) {
+        stripeErrorsEl.textContent = event.error.message;
+        stripeErrorsEl.classList.remove("hidden");
+      } else {
+        stripeErrorsEl.textContent = "";
+        stripeErrorsEl.classList.add("hidden");
+      }
+    });
+  } catch (err) {}
+}
+
+async function markCaseAsPaid(caseId) {
+  await updateDoc(doc(db, "consultations", caseId), {
+    status: "platit",
+    isPaid: true,
+    paidAt: serverTimestamp()
+  });
+
+  const targetEmail = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
+
+  if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
+    try {
+      await fetch(`${doctorConfig.functionsUrl}/sendDoctorEmailNotification`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          caseId,
+          doctorEmail: targetEmail,
+          caseDetails: currentActiveCase
+        })
+      });
+    } catch (mailErr) {}
+  }
+
+  piperStripeForm.classList.add("hidden");
+  piperSuccessScreen.classList.remove("hidden");
+  loadCases();
+}
+
+if (piperSimulatePayBtn) {
+  piperSimulatePayBtn.addEventListener("click", async () => {
+    if (!currentActiveCase) {
+      alert("Nu există o sesiune activă. Completează întâi formularul.");
+      window.switchTab("consult");
+      return;
+    }
+
+    piperSimulatePayBtn.disabled = true;
+    piperSimulatePayBtn.innerText = "Se procesează simularea...";
+
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    await markCaseAsPaid(currentActiveCase.id);
+
+    piperSimulatePayBtn.disabled = false;
+    piperSimulatePayBtn.innerText = "⚡ Simulează Plată Test (1-Click)";
+  });
+}
+
+if (piperStripeForm) {
+  piperStripeForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentActiveCase) {
+      alert("Sesiune expirată. Completează din nou formularul.");
+      window.switchTab("consult");
+      return;
+    }
+
+    piperPayBtn.disabled = true;
+    piperPayBtn.innerText = "Se procesează plata securizată...";
+
+    try {
+      let paymentConfirmed = false;
+
+      if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
+        const intentRes = await fetch(`${doctorConfig.functionsUrl}/createPaymentIntent`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            caseId: currentActiveCase.id,
+            amount: currentActiveCase.price,
+            serviceType: currentActiveCase.serviceType,
+            parentEmail: currentActiveCase.contact,
+            childAge: currentActiveCase.childAge
+          })
+        });
+
+        if (intentRes.ok) {
+          const intentData = await intentRes.json();
+          if (stripeInstance && cardElement && intentData.clientSecret) {
+            const result = await stripeInstance.confirmCardPayment(intentData.clientSecret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: { email: currentActiveCase.contact }
+              }
+            });
+
+            if (result.error) {
+              throw new Error(result.error.message);
+            } else if (result.paymentIntent.status === "succeeded") {
+              paymentConfirmed = true;
+            }
+          }
+        }
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1400));
+        paymentConfirmed = true;
+      }
+
+      if (paymentConfirmed) {
+        await markCaseAsPaid(currentActiveCase.id);
+      }
+    } catch (err) {
+      stripeErrorsEl.textContent = err.message;
+      stripeErrorsEl.classList.remove("hidden");
+    } finally {
+      piperPayBtn.disabled = false;
+      window.syncPricesAcrossDOM();
+    }
+  });
+}
 
 window.openArticle = function (id, fromTab = "home") {
   window.previousTab = fromTab;
@@ -165,120 +408,6 @@ if (readerDeleteBtn) {
   readerDeleteBtn.addEventListener("click", () => {
     if (currentViewingArticleId) window.deleteArticlePrompt(currentViewingArticleId);
   });
-}
-
-async function loadDoctorSettings() {
-  try {
-    const docRef = doc(db, "settings", "doctor_profile");
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      doctorConfig = { ...doctorConfig, ...snap.data() };
-    }
-  } catch (err) {}
-
-  syncDoctorSettingsToUI();
-}
-
-function syncDoctorSettingsToUI() {
-  const emailInput = document.getElementById("doctor-notification-email");
-  const analizeInput = document.getElementById("doctor-price-analize");
-  const externareInput = document.getElementById("doctor-price-externare");
-  const consiliereInput = document.getElementById("doctor-price-consiliere");
-  const stripeKeyInput = document.getElementById("doctor-stripe-key");
-  const functionsUrlInput = document.getElementById("doctor-functions-url");
-
-  if (emailInput) emailInput.value = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
-  if (analizeInput) analizeInput.value = doctorConfig.price_analize || 150;
-  if (externareInput) externareInput.value = doctorConfig.price_externare || 200;
-  if (consiliereInput) consiliereInput.value = doctorConfig.price_consiliere || 120;
-  if (stripeKeyInput) stripeKeyInput.value = doctorConfig.stripePublishableKey || "";
-  if (functionsUrlInput) functionsUrlInput.value = doctorConfig.functionsUrl || "";
-
-  const analizeEl = document.querySelector('[data-cms="price_analize"]');
-  const externareEl = document.querySelector('[data-cms="price_externare"]');
-  const consiliereEl = document.querySelector('[data-cms="price_consiliere"]');
-
-  if (analizeEl) analizeEl.innerText = `${doctorConfig.price_analize} RON`;
-  if (externareEl) externareEl.innerText = `${doctorConfig.price_externare} RON`;
-  if (consiliereEl) consiliereEl.innerText = `${doctorConfig.price_consiliere} RON`;
-
-  const selectedServiceInput = document.getElementById("selected-service-input");
-  if (selectedServiceInput) {
-    window.selectConsultService(selectedServiceInput.value || "analize");
-  }
-
-  initStripeElements();
-}
-
-if (doctorSettingsForm) {
-  doctorSettingsForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const notificationEmail = document.getElementById("doctor-notification-email").value.trim();
-    const price_analize = parseInt(document.getElementById("doctor-price-analize").value, 10) || 150;
-    const price_externare = parseInt(document.getElementById("doctor-price-externare").value, 10) || 200;
-    const price_consiliere = parseInt(document.getElementById("doctor-price-consiliere").value, 10) || 120;
-    const stripePublishableKey = document.getElementById("doctor-stripe-key").value.trim();
-    const functionsUrl = document.getElementById("doctor-functions-url").value.trim();
-
-    doctorConfig = {
-      notificationEmail,
-      price_analize,
-      price_externare,
-      price_consiliere,
-      stripePublishableKey,
-      functionsUrl
-    };
-
-    try {
-      await setDoc(doc(db, "settings", "doctor_profile"), doctorConfig, { merge: true });
-      await setDoc(doc(db, "settings", "site_content"), {
-        price_analize: `${price_analize} RON`,
-        price_externare: `${price_externare} RON`,
-        price_consiliere: `${price_consiliere} RON`
-      }, { merge: true });
-
-      syncDoctorSettingsToUI();
-      if (doctorSettingsStatus) {
-        doctorSettingsStatus.classList.remove("hidden");
-        setTimeout(() => doctorSettingsStatus.classList.add("hidden"), 3000);
-      }
-    } catch (err) {
-      alert("Eroare la salvare: " + err.message);
-    }
-  });
-}
-
-function initStripeElements() {
-  const cardContainer = document.getElementById("stripe-card-element");
-  if (!cardContainer || !window.Stripe) return;
-
-  const pubKey = doctorConfig.stripePublishableKey || "pk_test_TYooMQauvdEDq54NiTphI7jx";
-  try {
-    stripeInstance = window.Stripe(pubKey);
-    const elements = stripeInstance.elements();
-    cardElement = elements.create("card", {
-      style: {
-        base: {
-          fontFamily: "'Karla', sans-serif",
-          fontSize: "15px",
-          color: "#1D2D27",
-          "::placeholder": { color: "#8E9E98" }
-        }
-      }
-    });
-    cardContainer.innerHTML = "";
-    cardElement.mount("#stripe-card-element");
-
-    cardElement.on("change", (event) => {
-      if (event.error) {
-        stripeErrorsEl.textContent = event.error.message;
-        stripeErrorsEl.classList.remove("hidden");
-      } else {
-        stripeErrorsEl.textContent = "";
-        stripeErrorsEl.classList.add("hidden");
-      }
-    });
-  } catch (err) {}
 }
 
 function renderArticles() {
@@ -571,9 +700,9 @@ if (consultForm) {
     e.preventDefault();
     const submitBtn = document.getElementById("submit-btn");
     submitBtn.disabled = true;
-    submitBtn.innerText = "Se încarcă fișierele și se deschide Piper...";
+    submitBtn.innerText = "Se pregătește sesiunea de plată...";
     statusMsg.classList.remove("hidden");
-    statusMsg.innerText = "Se pregătește sesiunea de plată Piper...";
+    statusMsg.innerText = "Se înregistrează datele cazului...";
 
     try {
       const serviceType = document.getElementById("selected-service-input").value || "analize";
@@ -641,100 +770,11 @@ if (consultForm) {
       statusMsg.classList.add("hidden");
       consultForm.reset();
     } catch (err) {
-      statusMsg.innerText = "Eroare la inițiere: " + err.message;
+      statusMsg.innerText = "Eroare la trimitere: " + err.message;
       statusMsg.className = "text-center text-xs font-semibold mt-3 text-berryRose";
     } finally {
       submitBtn.disabled = false;
-      const currentService = document.getElementById("selected-service-input").value || "analize";
-      const currentPrice = doctorConfig[`price_${currentService}`] || 150;
-      submitBtn.innerHTML = `<span>Continuă spre Plata Piper</span><span class="bg-white/20 px-2.5 py-0.5 rounded-full text-xs font-bold">${currentPrice} RON</span>`;
-    }
-  });
-}
-
-if (piperStripeForm) {
-  piperStripeForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!currentActiveCase) {
-      alert("Sesiune expirată. Completează din nou formularul.");
-      window.switchTab("consult");
-      return;
-    }
-
-    piperPayBtn.disabled = true;
-    piperPayBtn.innerText = "Se procesează plata securizată...";
-
-    try {
-      let paymentConfirmed = false;
-
-      if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
-        const intentRes = await fetch(`${doctorConfig.functionsUrl}/createPaymentIntent`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            caseId: currentActiveCase.id,
-            amount: currentActiveCase.price,
-            serviceType: currentActiveCase.serviceType,
-            parentEmail: currentActiveCase.contact,
-            childAge: currentActiveCase.childAge
-          })
-        });
-
-        if (intentRes.ok) {
-          const intentData = await intentRes.json();
-          if (stripeInstance && cardElement && intentData.clientSecret) {
-            const result = await stripeInstance.confirmCardPayment(intentData.clientSecret, {
-              payment_method: {
-                card: cardElement,
-                billing_details: { email: currentActiveCase.contact }
-              }
-            });
-
-            if (result.error) {
-              throw new Error(result.error.message);
-            } else if (result.paymentIntent.status === "succeeded") {
-              paymentConfirmed = true;
-            }
-          }
-        }
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 1400));
-        paymentConfirmed = true;
-      }
-
-      if (paymentConfirmed) {
-        await updateDoc(doc(db, "consultations", currentActiveCase.id), {
-          status: "platit",
-          isPaid: true,
-          paidAt: serverTimestamp()
-        });
-
-        const targetDoctorEmail = doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com";
-
-        if (doctorConfig.functionsUrl && doctorConfig.functionsUrl.startsWith("http")) {
-          try {
-            await fetch(`${doctorConfig.functionsUrl}/sendDoctorEmailNotification`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                caseId: currentActiveCase.id,
-                doctorEmail: targetDoctorEmail,
-                caseDetails: currentActiveCase
-              })
-            });
-          } catch (mailErr) {}
-        }
-
-        piperStripeForm.classList.add("hidden");
-        piperSuccessScreen.classList.remove("hidden");
-        loadCases();
-      }
-    } catch (err) {
-      stripeErrorsEl.textContent = err.message;
-      stripeErrorsEl.classList.remove("hidden");
-    } finally {
-      piperPayBtn.disabled = false;
-      piperPayBtn.innerHTML = `<span>Plătește în siguranță</span><span id="piper-btn-amount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs">${currentActiveCase ? currentActiveCase.price : 150} RON</span>`;
+      window.syncPricesAcrossDOM();
     }
   });
 }
