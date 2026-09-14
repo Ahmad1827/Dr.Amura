@@ -218,10 +218,13 @@ function initStripeElements() {
   } catch (err) {}
 }
 
-async function markCaseAsPaid(caseId) {
+async function markCaseAsPaid(caseId, isSimulation = false) {
+  const statusValue = isSimulation ? "simulare_test" : "platit";
+
   await updateDoc(doc(db, "consultations", caseId), {
-    status: "platit",
+    status: statusValue,
     isPaid: true,
+    isSimulation: isSimulation,
     paidAt: serverTimestamp()
   });
 
@@ -235,7 +238,7 @@ async function markCaseAsPaid(caseId) {
         body: JSON.stringify({
           caseId,
           doctorEmail: targetEmail,
-          caseDetails: currentActiveCase
+          caseDetails: { ...currentActiveCase, isSimulation }
         })
       });
     } catch (mailErr) {}
@@ -257,8 +260,8 @@ if (piperSimulatePayBtn) {
     piperSimulatePayBtn.disabled = true;
     piperSimulatePayBtn.innerText = "Se procesează simularea...";
 
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    await markCaseAsPaid(currentActiveCase.id);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    await markCaseAsPaid(currentActiveCase.id, true);
 
     piperSimulatePayBtn.disabled = false;
     piperSimulatePayBtn.innerText = "⚡ Simulează Plată Test (1-Click)";
@@ -311,12 +314,12 @@ if (piperStripeForm) {
           }
         }
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 1400));
+        await new Promise((resolve) => setTimeout(resolve, 1200));
         paymentConfirmed = true;
       }
 
       if (paymentConfirmed) {
-        await markCaseAsPaid(currentActiveCase.id);
+        await markCaseAsPaid(currentActiveCase.id, false);
       }
     } catch (err) {
       stripeErrorsEl.textContent = err.message;
@@ -737,6 +740,7 @@ if (consultForm) {
         currency: "RON",
         status: "in_asteptare_plata",
         isPaid: false,
+        isSimulation: false,
         createdAt: serverTimestamp()
       });
 
@@ -796,7 +800,8 @@ async function loadCases() {
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
       const isReviewed = data.status === "finalizat";
-      const isPaid = data.isPaid || data.status === "platit";
+      const isSimulation = data.isSimulation === true || data.status === "simulare_test";
+      const isPaid = data.isPaid === true || data.status === "platit";
 
       const serviceName = data.serviceType === "externare" 
         ? "Bilet Externare" 
@@ -804,58 +809,84 @@ async function loadCases() {
           ? "Consiliere" 
           : "Analize Laborator";
 
+      let paymentBadgeHtml = "";
+      if (isReviewed) {
+        paymentBadgeHtml = `<span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-800">Finalizat ✓</span>`;
+      } else if (isSimulation) {
+        paymentBadgeHtml = `<span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">Simulare Test ⚡</span>`;
+      } else if (isPaid) {
+        paymentBadgeHtml = `<span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-leafLight text-leafGreenDark border border-leafGreen/30">Plătit prin Piper ✓</span>`;
+      } else {
+        paymentBadgeHtml = `<span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-berryRose border border-rose-200">Așteaptă Plată</span>`;
+      }
+
       const card = document.createElement("div");
-      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-6 flex flex-col gap-3 shadow-sm";
+      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-6 flex flex-col justify-between gap-4 shadow-sm";
       card.innerHTML = `
-        <div class="flex justify-between items-start gap-4">
-          <div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                isReviewed
-                  ? "bg-slate-200 text-slate-800"
-                  : isPaid
-                    ? "bg-leafLight text-leafGreenDark border border-leafGreen/30"
-                    : "bg-warmSun/20 text-amber-900 border border-warmSun/40"
-              }">
-                ${isReviewed ? "Finalizat" : isPaid ? "Plătit prin Piper ✓" : "Așteaptă Plată"}
-              </span>
-              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
-                ${serviceName}
-              </span>
-              <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-leafGreen/10 text-leafGreen">
-                ${data.price ? data.price + " RON" : "150 RON"}
-              </span>
+        <div class="space-y-3">
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                ${paymentBadgeHtml}
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
+                  ${serviceName}
+                </span>
+                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-leafGreen/10 text-leafGreen">
+                  ${data.price ? data.price + " RON" : "150 RON"}
+                </span>
+              </div>
+              <h4 class="text-lg font-display font-semibold mt-2 text-ink">${data.contact}</h4>
             </div>
-            <h4 class="text-lg font-display font-semibold mt-2 text-ink">${data.contact}</h4>
+            ${data.fileUrl ? `
+              <a href="${data.fileUrl}" target="_blank" class="text-xs font-bold text-leafGreen link-underline shrink-0">
+                Deschide fișierul
+              </a>
+            ` : `<span class="text-[11px] font-medium text-ink/40">Fără fișier</span>`}
           </div>
-          ${data.fileUrl ? `
-            <a href="${data.fileUrl}" target="_blank" class="text-xs font-bold text-leafGreen link-underline shrink-0">
-              Deschide fișierul
-            </a>
-          ` : `<span class="text-[11px] font-medium text-ink/40">Fără fișier</span>`}
+          <p class="text-xs font-medium text-ink/70">
+            <b>Vârstă:</b> ${data.childAge} &nbsp;·&nbsp; <b>Greutate:</b> ${data.childWeight || "nespecificată"}
+          </p>
+          <p class="text-xs font-medium bg-warmSun/10 border border-warmSun/30 rounded-xl p-3 leading-relaxed text-ink">
+            ${data.symptoms}
+          </p>
         </div>
-        <p class="text-xs font-medium text-ink/70">
-          <b>Vârstă:</b> ${data.childAge} &nbsp;·&nbsp; <b>Greutate:</b> ${data.childWeight || "nespecificată"}
-        </p>
-        <p class="text-xs font-medium bg-warmSun/10 border border-warmSun/30 rounded-xl p-3 leading-relaxed text-ink">
-          ${data.symptoms}
-        </p>
-        <div class="pt-2 border-t border-ink/10 flex items-center justify-between gap-2">
-          <button data-id="${docSnap.id}" data-status="finalizat" class="status-btn bg-leafGreen hover:bg-leafGreenDark text-white px-4 py-2 rounded-full text-xs font-bold transition-colors">
-            Marchează ca rezolvat
-          </button>
-          <span class="text-[10px] font-bold text-ink/40">Notificat: ${doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com"}</span>
+
+        <div class="pt-3 border-t border-ink/10 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            ${!isReviewed ? `
+              <button data-id="${docSnap.id}" data-action="finalize" class="finalize-case-btn bg-leafGreen hover:bg-leafGreenDark text-white px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
+                Marchează ca finalizat
+              </button>
+            ` : `
+              <button data-id="${docSnap.id}" data-action="delete" class="delete-case-btn bg-berryRose/10 hover:bg-berryRose/20 text-berryRose border border-berryRose/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors">
+                Șterge definitiv dosarul 🗑️
+              </button>
+            `}
+          </div>
+          <span class="text-[10px] font-bold text-ink/40">Notificare: ${doctorConfig.notificationEmail || "ahmadarnaoute1896@gmail.com"}</span>
         </div>
       `;
       casesContainer.appendChild(card);
     });
 
-    document.querySelectorAll(".status-btn").forEach((button) => {
+    document.querySelectorAll(".finalize-case-btn").forEach((button) => {
       button.addEventListener("click", async (e) => {
         const id = e.target.getAttribute("data-id");
-        const newStatus = e.target.getAttribute("data-status");
-        await updateDoc(doc(db, "consultations", id), { status: newStatus });
+        await updateDoc(doc(db, "consultations", id), { 
+          status: "finalizat",
+          finalizedAt: serverTimestamp()
+        });
         loadCases();
+      });
+    });
+
+    document.querySelectorAll(".delete-case-btn").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        const id = e.target.getAttribute("data-id");
+        if (confirm("Sigur doriți să ștergeți definitiv acest dosar din baza de date?")) {
+          await deleteDoc(doc(db, "consultations", id));
+          loadCases();
+        }
       });
     });
   } catch (err) {
