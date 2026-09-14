@@ -419,17 +419,17 @@ function renderArticles() {
     const homeSubset = currentArticles.slice(0, 3);
     homeSubset.forEach((art) => {
       const card = document.createElement("article");
-      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-leafGreen/40 transition-colors cursor-pointer";
+      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col justify-between hover:border-leafGreen/40 transition-colors cursor-pointer";
       card.onclick = () => window.openArticle(art.id, "home");
       card.innerHTML = `
-        <div class="space-y-3">
-          <span class="inline-block text-[11px] font-bold text-leafGreen bg-leafLight/70 px-2.5 py-1 rounded-full">
+        <div class="space-y-2 sm:space-y-3">
+          <span class="inline-block text-[10px] sm:text-[11px] font-bold text-leafGreen bg-leafLight/70 px-2.5 py-0.5 sm:py-1 rounded-full">
             ${art.category}
           </span>
-          <h4 class="text-base font-display font-semibold leading-snug text-ink">${art.title}</h4>
+          <h4 class="text-sm sm:text-base font-display font-semibold leading-snug text-ink">${art.title}</h4>
           <p class="text-xs text-ink/70 leading-relaxed">${art.excerpt}</p>
         </div>
-        <span class="text-xs font-bold text-leafGreen link-underline mt-4 inline-block self-start">
+        <span class="text-xs font-bold text-leafGreen link-underline mt-3 sm:mt-4 inline-block self-start">
           Citește ghidul →
         </span>
       `;
@@ -441,15 +441,15 @@ function renderArticles() {
     articlesArchiveList.innerHTML = "";
     currentArticles.forEach((art) => {
       const row = document.createElement("article");
-      row.className = "py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer hover:bg-white/40 px-3 rounded-2xl transition-colors";
+      row.className = "py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 cursor-pointer hover:bg-white/40 px-2 sm:px-3 rounded-2xl transition-colors";
       row.onclick = () => window.openArticle(art.id, "articles");
       row.innerHTML = `
         <div class="space-y-1 max-w-xl">
-          <span class="text-xs font-bold text-leafGreen uppercase tracking-wider">${art.category}</span>
-          <h4 class="text-lg font-display font-semibold text-ink leading-snug">${art.title}</h4>
+          <span class="text-[10px] sm:text-xs font-bold text-leafGreen uppercase tracking-wider">${art.category}</span>
+          <h4 class="text-base sm:text-lg font-display font-semibold text-ink leading-snug">${art.title}</h4>
           <p class="text-xs text-ink/65 leading-relaxed">${art.excerpt}</p>
         </div>
-        <span class="text-xs font-bold text-leafGreen link-underline shrink-0">
+        <span class="text-xs font-bold text-leafGreen link-underline shrink-0 self-start sm:self-auto">
           Citește articolul →
         </span>
       `;
@@ -461,7 +461,7 @@ function renderArticles() {
     doctorArticlesManageList.innerHTML = "";
     currentArticles.forEach((art) => {
       const item = document.createElement("div");
-      item.className = "py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
+      item.className = "py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3";
       item.innerHTML = `
         <div>
           <span class="text-[10px] font-bold text-leafGreen uppercase">${art.category}</span>
@@ -758,10 +758,10 @@ if (consultForm) {
 
       document.getElementById("piper-summary-service").innerText =
         serviceType === "externare"
-          ? "A Doua Opinie Bilet Externare"
+          ? "Bilet Externare"
           : serviceType === "consiliere"
-            ? "Consiliere Bebeluşi & Tranzit"
-            : "Interpretare Analize Medicale";
+            ? "Consiliere Bebeluşi"
+            : "Interpretare Analize";
 
       document.getElementById("piper-summary-email").innerText = contact;
       document.getElementById("piper-summary-amount").innerText = `${priceAmount} RON`;
@@ -821,45 +821,45 @@ async function loadCases() {
       }
 
       const card = document.createElement("div");
-      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-6 flex flex-col justify-between gap-4 shadow-sm";
+      card.className = "bg-white/80 border border-ink/10 rounded-2xl p-4 sm:p-6 flex flex-col justify-between gap-3 sm:gap-4 shadow-sm";
       card.innerHTML = `
-        <div class="space-y-3">
-          <div class="flex justify-between items-start gap-4">
+        <div class="space-y-2.5 sm:space-y-3">
+          <div class="flex justify-between items-start gap-3 sm:gap-4">
             <div>
-              <div class="flex items-center gap-2 flex-wrap">
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                 ${paymentBadgeHtml}
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
+                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-ink/70">
                   ${serviceName}
                 </span>
                 <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-leafGreen/10 text-leafGreen">
                   ${data.price ? data.price + " RON" : "150 RON"}
                 </span>
               </div>
-              <h4 class="text-lg font-display font-semibold mt-2 text-ink">${data.contact}</h4>
+              <h4 class="text-base sm:text-lg font-display font-semibold mt-1.5 sm:mt-2 text-ink">${data.contact}</h4>
             </div>
             ${data.fileUrl ? `
               <a href="${data.fileUrl}" target="_blank" class="text-xs font-bold text-leafGreen link-underline shrink-0">
-                Deschide fișierul
+                Fișier
               </a>
             ` : `<span class="text-[11px] font-medium text-ink/40">Fără fișier</span>`}
           </div>
           <p class="text-xs font-medium text-ink/70">
             <b>Vârstă:</b> ${data.childAge} &nbsp;·&nbsp; <b>Greutate:</b> ${data.childWeight || "nespecificată"}
           </p>
-          <p class="text-xs font-medium bg-warmSun/10 border border-warmSun/30 rounded-xl p-3 leading-relaxed text-ink">
+          <p class="text-xs font-medium bg-warmSun/10 border border-warmSun/30 rounded-xl p-2.5 sm:p-3 leading-relaxed text-ink">
             ${data.symptoms}
           </p>
         </div>
 
-        <div class="pt-3 border-t border-ink/10 flex flex-wrap items-center justify-between gap-2">
+        <div class="pt-2.5 sm:pt-3 border-t border-ink/10 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             ${!isReviewed ? `
-              <button data-id="${docSnap.id}" data-action="finalize" class="finalize-case-btn bg-leafGreen hover:bg-leafGreenDark text-white px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
-                Marchează ca finalizat
+              <button data-id="${docSnap.id}" data-action="finalize" class="finalize-case-btn bg-leafGreen hover:bg-leafGreenDark text-white px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
+                Finalizează
               </button>
             ` : `
-              <button data-id="${docSnap.id}" data-action="delete" class="delete-case-btn bg-berryRose/10 hover:bg-berryRose/20 text-berryRose border border-berryRose/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors">
-                Șterge definitiv dosarul 🗑️
+              <button data-id="${docSnap.id}" data-action="delete" class="delete-case-btn bg-berryRose/10 hover:bg-berryRose/20 text-berryRose border border-berryRose/30 px-3 py-1.5 rounded-full text-xs font-bold transition-colors">
+                Șterge dosarul 🗑️
               </button>
             `}
           </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>Dr. Bubbles - Pediatrie & Telemedicină</title>
+  <title>Dr. Arnaoute Amal-Antonia - Pediatrie & Telemedicină</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.stripe.com/v3/"></script>
@@ -178,7 +178,7 @@
 
   <div id="cms-toolbar" class="hidden fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-50 bg-ink text-parchment px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 sm:gap-3 border border-white/10 max-w-[92vw]">
     <div class="flex items-center gap-2 shrink-0">
-      <span class="w-2 h-2 rounded-full bg-warmSun animate-ping"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-warmSun animate-ping"></span>
       <span class="text-xs font-bold font-playful tracking-wide">Editare activă</span>
     </div>
     <button id="save-cms-btn" class="bg-leafGreen hover:bg-leafGreenDark text-white text-xs font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-all shadow-md shrink-0">
@@ -213,16 +213,16 @@
           </svg>
         </div>
         <div class="leading-tight">
-          <h1 class="text-lg sm:text-2xl font-display font-semibold tracking-tight text-ink">Dr. Bubbles</h1>
+          <h1 class="text-base sm:text-2xl font-display font-semibold tracking-tight text-ink leading-snug">Dr. Arnaoute Amal-Antonia</h1>
           <p class="text-[10px] sm:text-[11px] font-semibold text-leafGreen truncate max-w-[170px] sm:max-w-none" data-cms="brand_tagline">Cabinet pediatric & a doua opinie online</p>
         </div>
       </div>
 
       <nav class="hidden md:flex items-center gap-4 text-sm font-semibold">
-        <button onclick="switchTab('home')" class="link-underline py-1 text-ink/80 hover:text-ink">Acasă</button>
-        <button onclick="switchTab('about')" class="link-underline py-1 text-ink/80 hover:text-ink">Despre medic</button>
-        <button onclick="switchTab('consult')" class="link-underline py-1 font-bold text-leafGreen hover:text-leafGreenDark">Servicii</button>
-        <button onclick="switchTab('articles')" class="link-underline py-1 text-ink/80 hover:text-ink">Ghiduri & Articole</button>
+        <button onclick="switchTab('home')" data-nav-tab="home" class="link-underline py-1 font-bold text-leafGreen">Acasă</button>
+        <button onclick="switchTab('about')" data-nav-tab="about" class="link-underline py-1 text-ink/80 hover:text-ink">Despre medic</button>
+        <button onclick="switchTab('consult')" data-nav-tab="consult" class="link-underline py-1 text-ink/80 hover:text-ink">Servicii</button>
+        <button onclick="switchTab('articles')" data-nav-tab="articles" class="link-underline py-1 text-ink/80 hover:text-ink">Ghiduri & Articole</button>
       </nav>
 
       <div class="flex items-center gap-2">
@@ -251,16 +251,16 @@
         </div>
 
         <nav class="flex flex-col space-y-2 text-sm font-semibold text-ink">
-          <button onclick="window.toggleMobileNav(false); switchTab('home')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+          <button onclick="window.toggleMobileNav(false); switchTab('home')" data-drawer-tab="home" class="text-left py-2 px-3 rounded-xl bg-leafLight text-leafGreen font-bold transition-colors">
             🏡 Acasă
           </button>
-          <button onclick="window.toggleMobileNav(false); switchTab('about')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+          <button onclick="window.toggleMobileNav(false); switchTab('about')" data-drawer-tab="about" class="text-left py-2 px-3 rounded-xl bg-transparent text-ink/80 hover:bg-white/60 font-semibold transition-colors">
             👩‍⚕️ Despre medic
           </button>
-          <button onclick="window.toggleMobileNav(false); switchTab('consult')" class="text-left py-2 px-3 rounded-xl bg-leafLight text-leafGreen font-bold">
+          <button onclick="window.toggleMobileNav(false); switchTab('consult')" data-drawer-tab="consult" class="text-left py-2 px-3 rounded-xl bg-transparent text-ink/80 hover:bg-white/60 font-semibold transition-colors">
             🧪 Servicii & Tarife
           </button>
-          <button onclick="window.toggleMobileNav(false); switchTab('articles')" class="text-left py-2 px-3 rounded-xl hover:bg-white/60">
+          <button onclick="window.toggleMobileNav(false); switchTab('articles')" data-drawer-tab="articles" class="text-left py-2 px-3 rounded-xl bg-transparent text-ink/80 hover:bg-white/60 font-semibold transition-colors">
             📚 Ghiduri & Articole
           </button>
         </nav>
@@ -396,7 +396,7 @@
         <div class="flex items-center justify-between gap-2 border-b border-ink/10 pb-2.5 sm:pb-4">
           <div>
             <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-leafGreen block">Publicații recente</span>
-            <h3 class="text-lg sm:text-3xl font-display font-medium text-ink mt-0.5">Ghiduri Dr. Bubbles</h3>
+            <h3 class="text-lg sm:text-3xl font-display font-medium text-ink mt-0.5">Ghiduri Dr. Arnaoute Amal-Antonia</h3>
           </div>
           <button onclick="switchTab('articles')" class="text-xs font-bold text-leafGreen link-underline shrink-0">
             Vezi toate →
@@ -412,7 +412,7 @@
       <div class="border-b border-ink/10 pb-3 sm:pb-6 flex items-center justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-leafGreen block">Despre mine</span>
-          <h2 class="text-2xl sm:text-4xl font-display font-medium text-ink mt-0.5">Dr. Bubbles</h2>
+          <h2 class="text-xl sm:text-4xl font-display font-medium text-ink mt-0.5">Dr. Arnaoute Amal-Antonia</h2>
           <p class="text-xs sm:text-sm text-ink/60">Medic Pediatru & Mămică</p>
         </div>
         <button onclick="switchTab('home')" class="text-xs font-bold text-ink/60 hover:text-ink">
@@ -422,10 +422,10 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-10 items-center bg-white/70 border border-ink/10 rounded-2xl sm:rounded-3xl p-4 sm:p-12 shadow-sm">
         <div class="lg:col-span-5 flex justify-center">
-          <div class="blob-shape bg-leafLight border border-leafGreen/20 w-40 h-40 sm:w-60 sm:h-60 flex flex-col items-center justify-center text-center p-3 sm:p-6 shadow-sm">
+          <div class="blob-shape bg-leafLight border border-leafGreen/20 w-44 h-44 sm:w-60 sm:h-60 flex flex-col items-center justify-center text-center p-3 sm:p-6 shadow-sm">
             <span class="text-3xl sm:text-5xl mb-1 sm:mb-2">🩺</span>
-            <span class="text-base sm:text-xl font-display font-bold text-leafGreen">Dr. Bubbles</span>
-            <span class="text-[11px] sm:text-xs font-semibold text-ink/70">Medic Pediatru</span>
+            <span class="text-sm sm:text-lg font-display font-bold text-leafGreen leading-tight px-2">Dr. Arnaoute Amal-Antonia</span>
+            <span class="text-[11px] sm:text-xs font-semibold text-ink/70 mt-1">Medic Pediatru</span>
           </div>
         </div>
 
@@ -492,7 +492,7 @@
           <span id="reader-category" class="inline-block text-[10px] sm:text-xs font-bold text-leafGreen uppercase tracking-wider border-b-2 border-leafGreen/40 pb-0.5 mb-2"></span>
           <h1 id="reader-title" class="text-xl sm:text-4xl font-display font-semibold text-ink leading-tight"></h1>
           <div class="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-ink/60 mt-2 pt-2 border-t border-ink/10">
-            <span>Autor: <b>Dr. Bubbles</b></span>
+            <span>Autor: <b>Dr. Arnaoute Amal-Antonia</b></span>
             <span>·</span>
             <span id="reader-date">Pediatrie Generală</span>
           </div>
@@ -735,7 +735,7 @@
           </button>
 
           <p class="text-[10px] sm:text-[11px] text-center text-ink/50 leading-relaxed">
-            Standard PCI-DSS certificat de Stripe. Datele bancare nu sunt stocate pe serverele Dr. Bubbles.
+            Standard PCI-DSS certificat de Stripe. Datele bancare nu sunt stocate pe serverele cabinetului.
           </p>
         </form>
 
@@ -745,7 +745,7 @@
           </div>
           <h3 class="text-xl sm:text-2xl font-display font-semibold text-ink">Plată confirmată!</h3>
           <p class="text-xs text-ink/70 max-w-sm mx-auto leading-relaxed">
-            Dosarul a fost recepționat de Dr. Bubbles. Notificarea a fost trimisă către medic, iar evaluarea va fi trimisă pe e-mail.
+            Dosarul a fost recepționat de Dr. Arnaoute Amal-Antonia. Notificarea a fost trimisă către medic, iar evaluarea va fi trimisă pe e-mail.
           </p>
           <button onclick="switchTab('home')" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all">
             Înapoi pe prima pagină
@@ -791,26 +791,26 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 pt-1 sm:pt-2">
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Analize (RON)</label>
-              <input type="number" id="doctor-price-analize" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="number" id="doctor-price-analize" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Bilet Externare (RON)</label>
-              <input type="number" id="doctor-price-externare" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="number" id="doctor-price-externare" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Tarif Consiliere (RON)</label>
-              <input type="number" id="doctor-price-consiliere" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="number" id="doctor-price-consiliere" required min="1" step="1" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 pt-1 sm:pt-2">
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Stripe Publishable Key</label>
-              <input type="text" id="doctor-stripe-key" placeholder="pk_test_..." class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="text" id="doctor-stripe-key" placeholder="pk_test_..." class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Firebase Functions URL</label>
-              <input type="url" id="doctor-functions-url" placeholder="https://us-central1-drbubbles-49e6f.cloudfunctions.net" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="url" id="doctor-functions-url" placeholder="https://us-central1-drbubbles-49e6f.cloudfunctions.net" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
           </div>
 
@@ -828,21 +828,21 @@
         <form id="new-article-form" class="space-y-3 sm:space-y-4">
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1">Titlu articol</label>
-            <input type="text" id="new-art-title" required placeholder="Ex: De ce febra nu trebuie coborâtă cu orice preț" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+            <input type="text" id="new-art-title" required placeholder="Ex: De ce febra nu trebuie coborâtă cu orice preț" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Categorie</label>
-              <input type="text" id="new-art-category" required placeholder="Ex: Ghid Febră, Analize, Nutriție" class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="text" id="new-art-category" required placeholder="Ex: Ghid Febră, Analize, Nutriție" class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-ink/70 mb-1">Rezumat Scurt</label>
-              <input type="text" id="new-art-excerpt" required placeholder="Ex: Când apelăm la antitermic..." class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
+              <input type="text" id="new-art-excerpt" required placeholder="Ex: Când apelăm la antitermic..." class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none">
             </div>
           </div>
           <div>
             <label class="block text-xs font-bold text-ink/70 mb-1">Conținut Complet</label>
-            <textarea id="new-art-content" rows="4" required placeholder="Scrie textul complet aici..." class="w-full border border-ink/15 rounded-xl px-3 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
+            <textarea id="new-art-content" rows="4" required placeholder="Scrie textul complet aici..." class="w-full border border-ink/15 rounded-xl px-3.5 py-2 text-sm font-semibold bg-white focus:border-leafGreen focus:outline-none"></textarea>
           </div>
           <button type="submit" class="w-full sm:w-auto bg-leafGreen hover:bg-leafGreenDark text-white font-bold px-6 py-2.5 rounded-full text-xs transition-colors shadow-sm">
             Publică articolul
@@ -864,21 +864,21 @@
   </main>
 
   <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FBF1DE]/95 backdrop-blur-md border-t border-ink/10 px-3 py-1.5 flex items-center justify-between gap-1 shadow-lg">
-    <button onclick="switchTab('home')" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/80 hover:text-ink">
+    <button onclick="switchTab('home')" data-bottom-tab="home" class="flex flex-col items-center justify-center flex-1 py-1 text-leafGreen font-bold transition-colors">
       <span class="text-base leading-none">🏡</span>
-      <span class="text-[10px] font-bold mt-0.5">Acasă</span>
+      <span class="text-[10px] mt-0.5">Acasă</span>
     </button>
-    <button onclick="switchTab('about')" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/80 hover:text-ink">
+    <button onclick="switchTab('about')" data-bottom-tab="about" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/60 font-medium hover:text-ink transition-colors">
       <span class="text-base leading-none">👩‍⚕️</span>
-      <span class="text-[10px] font-bold mt-0.5">Medic</span>
+      <span class="text-[10px] mt-0.5">Medic</span>
     </button>
-    <button onclick="switchTab('consult')" class="flex flex-col items-center justify-center flex-1 py-1 text-leafGreen font-bold">
+    <button onclick="switchTab('consult')" data-bottom-tab="consult" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/60 font-medium hover:text-ink transition-colors">
       <span class="text-base leading-none">🧪</span>
       <span class="text-[10px] mt-0.5">Servicii</span>
     </button>
-    <button onclick="switchTab('articles')" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/80 hover:text-ink">
+    <button onclick="switchTab('articles')" data-bottom-tab="articles" class="flex flex-col items-center justify-center flex-1 py-1 text-ink/60 font-medium hover:text-ink transition-colors">
       <span class="text-base leading-none">📚</span>
-      <span class="text-[10px] font-bold mt-0.5">Ghiduri</span>
+      <span class="text-[10px] mt-0.5">Ghiduri</span>
     </button>
     <button onclick="switchTab('consult')" class="bg-coralPop hover:bg-coralDark text-white px-3 py-1.5 rounded-full font-bold text-xs shadow-sm active:scale-95 transition-transform flex items-center gap-1 shrink-0 ml-1">
       <span>💌</span> Trimite
@@ -933,7 +933,7 @@
         Funcționalitate în dezvoltare
       </span>
       <p class="text-xs text-ink/70 leading-relaxed">
-        Lucrăm la integrarea cabinetului video live cu conexiune criptată direct în browser. În această perioadă, Dr. Bubbles oferă evaluări complete pe baza fișierelor și analizelor transmise online.
+        Lucrăm la integrarea cabinetului video live cu conexiune criptată direct în browser. În această perioadă, Dr. Arnaoute Amal-Antonia oferă evaluări complete pe baza fișierelor și analizelor transmise online.
       </p>
       <button onclick="document.getElementById('video-wip-modal').classList.add('hidden'); window.selectConsultService('analize');" class="mt-4 w-full bg-leafGreen hover:bg-leafGreenDark text-white py-2.5 rounded-full text-xs font-bold transition-all shadow-sm">
         Trimite analizele în format scris →
@@ -966,15 +966,40 @@
   <footer class="bg-ink text-parchment mt-8 sm:mt-16 py-6 sm:py-10 text-xs font-medium relative z-20">
     <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-6 text-center md:text-left">
       <div class="space-y-1">
-        <p class="font-display font-semibold text-sm text-white">Dr. Bubbles · Pediatrie & analize online</p>
+        <p class="font-display font-semibold text-sm text-white">Dr. Arnaoute Amal-Antonia · Pediatrie & analize online</p>
         <p class="text-white/60">Opinii medicale orientative bazate pe dovezi clinice.</p>
       </div>
-      <p class="text-white/40">© 2026 Dr. Bubbles. Toate drepturile rezervate.</p>
+      <p class="text-white/40">© 2026 Dr. Arnaoute Amal-Antonia. Toate drepturile rezervate.</p>
     </div>
   </footer>
 
   <script>
     window.previousTab = "home";
+
+    function updateNavHighlights(tab) {
+      const activeNavTab = (tab === 'piper-checkout') ? 'consult' : (tab === 'article-view') ? 'articles' : tab;
+
+      document.querySelectorAll('[data-bottom-tab]').forEach((el) => {
+        const isMatch = el.getAttribute('data-bottom-tab') === activeNavTab;
+        el.className = isMatch
+          ? "flex flex-col items-center justify-center flex-1 py-1 text-leafGreen font-bold transition-colors"
+          : "flex flex-col items-center justify-center flex-1 py-1 text-ink/60 font-medium hover:text-ink transition-colors";
+      });
+
+      document.querySelectorAll('[data-drawer-tab]').forEach((el) => {
+        const isMatch = el.getAttribute('data-drawer-tab') === activeNavTab;
+        el.className = isMatch
+          ? "text-left py-2 px-3 rounded-xl bg-leafLight text-leafGreen font-bold transition-colors"
+          : "text-left py-2 px-3 rounded-xl bg-transparent text-ink/80 hover:bg-white/60 font-semibold transition-colors";
+      });
+
+      document.querySelectorAll('[data-nav-tab]').forEach((el) => {
+        const isMatch = el.getAttribute('data-nav-tab') === activeNavTab;
+        el.className = isMatch
+          ? "link-underline py-1 font-bold text-leafGreen"
+          : "link-underline py-1 text-ink/80 hover:text-ink";
+      });
+    }
 
     window.switchTab = function (tab) {
       const tabs = ["home", "about", "articles", "article-view", "consult", "piper-checkout", "doctor"];
@@ -986,6 +1011,8 @@
       const active = document.getElementById("tab-" + tab);
       if (active) active.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      updateNavHighlights(tab);
     };
 
     window.toggleLoginModal = function (show) {
@@ -1036,19 +1063,19 @@
       const fileLabel = document.getElementById("file-label");
 
       if (type === "analize") {
-        badge.innerText = "Serviciu selectat: Interpretare Analize Medicale";
+        badge.innerText = "Serviciu selectat: Interpretare Analize";
         title.innerText = "Trimite buletinul de analize";
         desc.innerText = "Încarcă rezultatele de laborator (hemoleucograme, uroculturi, PCR, biochimie).";
         fileInput.required = true;
-        fileLabel.innerText = "Atașează buletinul de analize (PDF, imagini) *";
+        fileLabel.innerText = "Atașează buletinul de analize *";
       } else if (type === "externare") {
-        badge.innerText = "Serviciu selectat: A Doua Opinie Bilet Externare";
+        badge.innerText = "Serviciu selectat: Bilet Externare";
         title.innerText = "Trimite biletul de ieșire din spital";
-        desc.innerText = "Încarcă biletul de externare sau scrisoarea medicală pentru revizuirea diagnosticului și a tratamentului.";
+        desc.innerText = "Încarcă biletul de externare pentru revizuirea diagnosticului și a tratamentului.";
         fileInput.required = true;
-        fileLabel.innerText = "Atașează biletul de externare (PDF, imagini) *";
+        fileLabel.innerText = "Atașează biletul de externare *";
       } else if (type === "consiliere") {
-        badge.innerText = "Serviciu selectat: Consiliere Bebeluşi & Dezvoltare";
+        badge.innerText = "Serviciu selectat: Consiliere Bebeluşi";
         title.innerText = "Adresează întrebarea medicală";
         desc.innerText = "Întrebări legate de diversificare, tranzit intestinal, apetit sau parametri de creștere.";
         fileInput.required = false;
@@ -1059,6 +1086,8 @@
         window.syncPricesAcrossDOM();
       }
     };
+
+    updateNavHighlights("home");
   </script>
 </body>
 </html>
