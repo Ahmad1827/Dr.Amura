@@ -623,6 +623,30 @@
       <p class="text-white/40">© 2026 Dr. Bubbles. Toate drepturile rezervate.</p>
     </div>
   </footer>
+  <script>
+    window.previousTab = "home";
+
+    window.switchTab = function (tab) {
+      const tabs = ["home", "about", "services", "articles", "article-view", "consult", "doctor"];
+      tabs.forEach(function (t) {
+        const el = document.getElementById("tab-" + t);
+        if (el) el.classList.add("hidden");
+      });
+
+      const active = document.getElementById("tab-" + tab);
+      if (active) active.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.toggleLoginModal = function (show) {
+      const modal = document.getElementById("login-modal");
+      if (modal) modal.classList.toggle("hidden", !show);
+    };
+
+    window.historyBackFromArticle = function () {
+      window.switchTab(window.previousTab || "home");
+    };
+  </script>
 
 </body>
 </html>
